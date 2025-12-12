@@ -75,6 +75,44 @@
         transition: 0.3s;
     }
 
+    /* BOTÃO HAMBURGER (NOVO) */
+    .hamburger-toggle {
+        position: fixed;
+        top: 20px !important;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 18px;
+    }
+
+    .hamburger-toggle:hover {
+        transform: scale(1.1);
+        background: var(--accent-color);
+    }
+
+    /* Quando sidebar está visível, ajustar posição do hamburger */
+    body:not(.sidebar-hidden) .hamburger-toggle {
+        left: 300px;
+        transform: translateX(-50%);
+    }
+
+    /* Quando sidebar está escondida, hamburger fica fixo */
+    body.sidebar-hidden .hamburger-toggle {
+        left: 20px;
+        transform: none;
+    }
+
     /* --- SIDEBAR (Barra Lateral) --- */
     aside {
         width: 280px;
@@ -241,11 +279,31 @@
     #dashboard-view {
         flex: 1;
         padding: 40px;
-        overflow-y: auto;
+        overflow-y: auto; /* ADICIONADO: ROLAGEM VERTICAL */
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start; /* ALTERADO: flex-start em vez de center */
+        max-height: calc(100vh - 150px); /* ADICIONADO: Altura máxima */
+    }
+
+    /* BARRA DE ROLAGEM ESTILIZADA PARA DASHBOARD */
+    #dashboard-view::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    #dashboard-view::-webkit-scrollbar-track {
+        background: var(--bg-hover);
+        border-radius: 10px;
+    }
+
+    #dashboard-view::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 10px;
+    }
+
+    #dashboard-view::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2, #667eea);
     }
 
     .hero-title {
@@ -261,11 +319,12 @@
 
     .widgets-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
-        max-width: 800px;
+        max-width: 1200px; /* AUMENTADO: Mais espaço */
         width: 100%;
         margin-top: 40px;
+        padding-bottom: 40px; /* ADICIONADO: Espaço no final */
     }
 
     .widget-card {
@@ -395,6 +454,46 @@
         color: var(--text-main);
         font-size: 16px;
         outline: none;
+    }
+
+    /* Botão para mostrar/esconder sidebar - CENTRALIZADO VERTICALMENTE */
+    .sidebar-toggle {
+        position: fixed;
+        top: 50% !important;
+        left: 285px;
+        width: 30px;
+        height: 30px;
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 14px;
+        transform: translateX(-50%) translateY(-50%) !important;
+    }
+    
+    .sidebar-toggle:hover {
+        transform: translateX(-50%) translateY(-50%) scale(1.1) !important;
+    }
+    
+    body.sidebar-hidden .sidebar-toggle {
+        left: 20px !important;
+        background: var(--accent-color);
+        transform: translateY(-50%) !important;
+    }
+    
+    body.sidebar-hidden .sidebar-toggle:hover {
+        transform: translateY(-50%) scale(1.1) !important;
+    }
+    
+    body.sidebar-hidden .sidebar-toggle i {
+        transform: rotate(180deg);
     }
 
     /* --- VOICE OVERLAY --- */
@@ -1139,46 +1238,6 @@
         color: var(--danger);
     }
 
-    /* Botão para mostrar/esconder sidebar - CENTRALIZADO VERTICALMENTE */
-    .sidebar-toggle {
-        position: fixed;
-        top: 50% !important;
-        left: 285px;
-        width: 30px;
-        height: 30px;
-        background: var(--primary-gradient);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 999;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 14px;
-        transform: translateX(-50%) translateY(-50%) !important;
-    }
-    
-    .sidebar-toggle:hover {
-        transform: translateX(-50%) translateY(-50%) scale(1.1) !important;
-    }
-    
-    body.sidebar-hidden .sidebar-toggle {
-        left: 20px !important;
-        background: var(--accent-color);
-        transform: translateY(-50%) !important;
-    }
-    
-    body.sidebar-hidden .sidebar-toggle:hover {
-        transform: translateY(-50%) scale(1.1) !important;
-    }
-    
-    body.sidebar-hidden .sidebar-toggle i {
-        transform: rotate(180deg);
-    }
-    
     /* ANIMAÇÕES */
     @keyframes breathe { 
         0%, 100% { transform: scale(1); opacity: 0.8; } 
@@ -1264,11 +1323,22 @@
         .menu-dropdown {
             width: 250px;
         }
+        
+        .hamburger-toggle {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+        }
     }
 
 </style>
 </head>
 <body>
+
+    <!-- NOVO: Botão hamburger menu -->
+    <button class="hamburger-toggle" id="hamburgerToggle" title="Abrir Menu Principal">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Botão para mostrar/esconder sidebar - CENTRALIZADO -->
     <button class="sidebar-toggle" id="sidebarToggle" title="Esconder Menu (Ctrl+B)">
@@ -1507,7 +1577,7 @@
                 </div>
             </div>
 
-            <!-- DASHBOARD INICIAL (GENÉRICO) -->
+            <!-- DASHBOARD INICIAL (GENÉRICO) - AGORA COM ROLAGEM -->
             <div id="dashboard-view">
                 <div class="hero-title">Como posso ajudar hoje?</div>
                 
@@ -1613,6 +1683,86 @@
                         <div class="w-text">
                             <h3>Memória Avançada</h3>
                             <p>Lembretes e preferências</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Explique a reanimação neonatal')">
+                        <div class="w-icon"><i class="fas fa-baby"></i></div>
+                        <div class="w-text">
+                            <h3>Reanimação Neonatal</h3>
+                            <p>Protocolos e algoritmos</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="generatePDF()">
+                        <div class="w-icon"><i class="fas fa-file-medical"></i></div>
+                        <div class="w-text">
+                            <h3>Relatório Clínico</h3>
+                            <p>Gere relatórios automatizados</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Explique modos ventilatorios avançados')">
+                        <div class="w-icon"><i class="fas fa-wind"></i></div>
+                        <div class="w-text">
+                            <h3>Modos Ventilatórios</h3>
+                            <p>APRV, PRVC, ASV</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Crie uma função em JavaScript')">
+                        <div class="w-icon"><i class="fab fa-js"></i></div>
+                        <div class="w-text">
+                            <h3>JavaScript Helper</h3>
+                            <p>Funções e bibliotecas</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('O que é SDRA?')">
+                        <div class="w-icon"><i class="fas fa-lungs-virus"></i></div>
+                        <div class="w-text">
+                            <h3>SDRA - Síndrome</h3>
+                            <p>Diagnóstico e tratamento</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Exemplos de código React')">
+                        <div class="w-icon"><i class="fab fa-react"></i></div>
+                        <div class="w-text">
+                            <h3>React Developer</h3>
+                            <p>Componentes e hooks</p>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-card" onclick="usarSugestao('Como calcular gotejamento?')">
+                        <div class="w-icon"><i class="fas fa-tint"></i></div>
+                        <div class="w-text">
+                            <h3>Gotejamento</h3>
+                            <p>Cálculos de infusão</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Explique ECMO')">
+                        <div class="w-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="w-text">
+                            <h3>ECMO</h3>
+                            <p>Oxigenação extracorpórea</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Crie um chatbot em Python')">
+                        <div class="w-icon"><i class="fas fa-comments"></i></div>
+                        <div class="w-text">
+                            <h3>Chatbot Python</h3>
+                            <p>Desenvolvimento de IA</p>
+                        </div>
+                    </div>
+
+                    <div class="widget-card" onclick="usarSugestao('Monitorização hemodinâmica')">
+                        <div class="w-icon"><i class="fas fa-heart"></i></div>
+                        <div class="w-text">
+                            <h3>Hemodinâmica</h3>
+                            <p>Parâmetros e monitoração</p>
                         </div>
                     </div>
                 </div>
@@ -2103,6 +2253,18 @@
     let timelineVisible = false;
     let sidebarVisible = true;
     
+    // ==================== NOVA FUNÇÃO: TOGGLE HAMBURGER MENU ====================
+    function toggleHamburgerMenu() {
+        const menuDropdown = document.getElementById('menuDropdown');
+        const menuToggle = document.getElementById('menuToggle');
+        
+        // Simular clique no botão de menu existente
+        menuToggle.click();
+        
+        // Mostrar notificação
+        showNotification('Menu de funcionalidades aberto');
+    }
+    
     // ==================== FUNÇÕES DAS 7 FUNCIONALIDADES DO MENU ====================
     
     // 1. FUNÇÃO: Modo Compacto
@@ -2110,6 +2272,7 @@
         compactModeActive = !compactModeActive;
         const aside = document.querySelector('aside');
         const sidebarToggle = document.getElementById('sidebarToggle');
+        const hamburgerToggle = document.querySelector('.hamburger-toggle');
         
         if (compactModeActive) {
             // Ativar modo compacto
@@ -2120,8 +2283,10 @@
             document.querySelector('.brand-area').style.justifyContent = 'center';
             document.querySelector('.sidebar-footer').style.display = 'none';
             
-            // Ajustar botão toggle
+            // Ajustar botões
             sidebarToggle.style.left = '60px';
+            hamburgerToggle.style.left = '70px';
+            hamburgerToggle.style.transform = 'translateX(-50%)';
             
             showNotification('Modo compacto ativado');
         } else {
@@ -2133,8 +2298,16 @@
             document.querySelector('.brand-area').style.justifyContent = 'flex-start';
             document.querySelector('.sidebar-footer').style.display = 'block';
             
-            // Restaurar botão toggle
-            sidebarToggle.style.left = '285px';
+            // Restaurar botões
+            if (sidebarVisible) {
+                sidebarToggle.style.left = '285px';
+                hamburgerToggle.style.left = '300px';
+                hamburgerToggle.style.transform = 'translateX(-50%)';
+            } else {
+                sidebarToggle.style.left = '20px';
+                hamburgerToggle.style.left = '20px';
+                hamburgerToggle.style.transform = 'none';
+            }
             
             showNotification('Modo compacto desativado');
         }
@@ -2532,16 +2705,21 @@
         document.body.classList.toggle('sidebar-hidden');
         
         const toggleBtn = document.getElementById('sidebarToggle');
+        const hamburgerBtn = document.querySelector('.hamburger-toggle');
         const icon = toggleBtn.querySelector('i');
         
         if (!sidebarVisible) {
             icon.className = 'fas fa-chevron-right';
             toggleBtn.title = 'Mostrar Menu (Ctrl+B)';
+            hamburgerBtn.style.left = '20px';
+            hamburgerBtn.style.transform = 'none';
             adjustWindowsForHiddenSidebar();
             showNotification('Menu escondido');
         } else {
             icon.className = 'fas fa-chevron-left';
             toggleBtn.title = 'Esconder Menu (Ctrl+B)';
+            hamburgerBtn.style.left = '300px';
+            hamburgerBtn.style.transform = 'translateX(-50%)';
             restoreWindowsPosition();
             showNotification('Menu visível');
         }
@@ -2686,7 +2864,7 @@
         
         switch(personalidade) {
             case 'teacher':
-                respostaPadrao = 'Vamos aprender juntos! Posso explicar sobre ventilação mecânica, neonatologia, programação Python e outros tópicos. O que você gostaria de saber?';
+                respostaPadrao = 'Vamos aprender juntos! Posso explicar sobre ventilação mecânica, neonatologia, programação Python e outros tópics. O que você gostaria de saber?';
                 break;
             case 'simple':
                 respostaPadrao = 'Posso ajudar com assuntos de saúde ou tecnologia. Me pergunte de forma simples!';
@@ -2907,6 +3085,9 @@
             toggleSidebar(); // Esconde a sidebar
         }
         
+        // Configurar botão hamburger
+        document.getElementById('hamburgerToggle').addEventListener('click', toggleHamburgerMenu);
+        
         // Carregar contexto
         carregarContextoSalvo();
         
@@ -2942,6 +3123,8 @@
         console.log('   5. Recomendações Inteligentes');
         console.log('   6. Dock de Aplicativos');
         console.log('   7. Timeline do Chat');
+        console.log('✨ NOVO: Botão hamburger adicionado!');
+        console.log('✨ NOVO: Dashboard com rolagem ativada!');
     };
     
     function carregarContextoSalvo() {
@@ -3217,6 +3400,8 @@
     console.log('   5. ✅ Recomendações Inteligentes');
     console.log('   6. ✅ Dock de Aplicativos');
     console.log('   7. ✅ Timeline do Chat');
+    console.log('✨ BOTÃO HAMBURGER: Adicionado ao lado da sidebar!');
+    console.log('✨ DASHBOARD: Agora tem rolagem para cima e para baixo!');
     
 </script>
 </body>
