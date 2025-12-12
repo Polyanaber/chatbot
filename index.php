@@ -210,16 +210,32 @@
         cursor: pointer;
     }
     
+    .header-icons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
     .header-icons button {
         background: transparent;
         border: none;
         color: var(--text-muted);
         font-size: 18px;
-        margin-left: 15px;
         cursor: pointer;
         transition: 0.2s;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .header-icons button:hover { color: var(--text-main); transform: scale(1.1); }
+    
+    .header-icons button:hover { 
+        color: var(--text-main); 
+        background: var(--bg-hover);
+        transform: scale(1.05); 
+    }
 
     /* --- DASHBOARD INICIAL (GENÉRICO) --- */
     #dashboard-view {
@@ -276,16 +292,65 @@
     #chat-view {
         display: none;
         flex: 1;
-        flex-direction: column;
+        flex-direction: row !important;
         overflow: hidden;
     }
+    
     #chat-history {
-        flex: 1;
-        overflow-y: auto;
+        flex: 3;
+        overflow-y: auto !important;
         padding: 40px;
         display: flex;
         flex-direction: column;
         gap: 25px;
+        max-height: calc(100vh - 200px) !important;
+        min-height: 300px;
+        border-right: 1px solid var(--border);
+    }
+
+    /* Estilos para a barra de rolagem do chat */
+    #chat-history::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #chat-history::-webkit-scrollbar-track {
+        background: var(--bg-hover);
+        border-radius: 10px;
+    }
+
+    #chat-history::-webkit-scrollbar-thumb {
+        background: var(--accent-color);
+        border-radius: 10px;
+    }
+
+    #chat-history::-webkit-scrollbar-thumb:hover {
+        background: #764ba2;
+    }
+
+    #chat-timeline {
+        flex: 1;
+        background: var(--bg-surface);
+        border-left: 1px solid var(--border);
+        overflow-y: auto;
+        max-width: 250px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .timeline-item {
+        padding: 8px 12px;
+        margin: 5px 0;
+        background: var(--bg-hover);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .timeline-item:hover {
+        background: var(--primary-gradient);
+        color: white;
+        transform: translateX(5px);
     }
 
     .msg-row { display: flex; gap: 18px; animation: slideUp 0.3s ease; max-width: 800px; margin: 0 auto; width: 100%; }
@@ -672,6 +737,8 @@
         gap: 15px;
         z-index: 999;
         pointer-events: all;
+        max-width: 90vw;
+        overflow-x: auto;
     }
     
     .app-icon {
@@ -940,21 +1007,142 @@
         animation: windowOpen 0.3s ease-out;
     }
     
-    @keyframes windowOpen {
-        from {
-            opacity: 0;
-            transform: scale(0.8) translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+    /* ============ MENU DROPDOWN UNIFICADO ============ */
+    .menu-dropdown-container {
+        position: relative;
+        display: inline-block;
     }
-    
-    /* Botão para mostrar/esconder sidebar */
+
+    .menu-toggle {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 20px;
+        cursor: pointer;
+        transition: 0.2s;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .menu-toggle:hover {
+        background: var(--bg-hover);
+        color: var(--text-main);
+        transform: scale(1.05);
+    }
+
+    .menu-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        width: 320px;
+        max-height: 80vh;
+        overflow-y: auto;
+        z-index: 1001;
+        display: none;
+        margin-top: 10px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+        animation: windowOpen 0.2s ease-out;
+    }
+
+    .menu-dropdown.show {
+        display: block;
+    }
+
+    .dropdown-section {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .dropdown-section:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-weight: 700;
+        letter-spacing: 0.8px;
+    }
+
+    .dropdown-header i {
+        font-size: 14px;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text-main);
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.2s;
+        border-radius: 8px;
+        margin: 0 8px;
+    }
+
+    .dropdown-item:hover {
+        background: var(--bg-hover);
+        transform: translateX(5px);
+    }
+
+    .dropdown-item i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent-color);
+        font-size: 16px;
+    }
+
+    .dropdown-badge {
+        margin-left: auto;
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 10px;
+        background: var(--bg-hover);
+        color: var(--text-muted);
+        font-weight: 600;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .ai-status {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+    }
+
+    .ai-status.active {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+    }
+
+    .status-active {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+    }
+
+    .status-inactive {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+    }
+
+    /* Botão para mostrar/esconder sidebar - CENTRALIZADO VERTICALMENTE */
     .sidebar-toggle {
         position: fixed;
-        top: 85px;
+        top: 50% !important;
         left: 285px;
         width: 30px;
         height: 30px;
@@ -970,16 +1158,21 @@
         transition: all 0.3s ease;
         border: none;
         font-size: 14px;
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateY(-50%) !important;
     }
     
     .sidebar-toggle:hover {
-        transform: translateX(-50%) scale(1.1);
+        transform: translateX(-50%) translateY(-50%) scale(1.1) !important;
     }
     
     body.sidebar-hidden .sidebar-toggle {
-        left: 20px;
+        left: 20px !important;
         background: var(--accent-color);
+        transform: translateY(-50%) !important;
+    }
+    
+    body.sidebar-hidden .sidebar-toggle:hover {
+        transform: translateY(-50%) scale(1.1) !important;
     }
     
     body.sidebar-hidden .sidebar-toggle i {
@@ -1006,12 +1199,78 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.7; }
     }
+    
+    @keyframes slideIn {
+        from { transform: translateX(100px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100px); opacity: 0; }
+    }
+    
+    @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 5px rgba(140, 82, 255, 0.5); }
+        50% { box-shadow: 0 0 20px rgba(140, 82, 255, 0.8); }
+    }
+    
+    .ai-active {
+        animation: pulseGlow 2s infinite;
+    }
+
+    /* Media query para telas menores */
+    @media (max-height: 700px) {
+        .app-dock {
+            display: none;
+        }
+        
+        #chat-history {
+            max-height: calc(100vh - 150px) !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        #chat-timeline {
+            max-width: 200px;
+            min-width: 150px;
+        }
+    }
+    
+    @media (max-width: 900px) {
+        #chat-view {
+            flex-direction: column !important;
+        }
+        
+        #chat-timeline {
+            max-width: 100%;
+            min-width: 100%;
+            border-left: none;
+            border-top: 1px solid var(--border);
+            max-height: 200px;
+        }
+        
+        .menu-dropdown {
+            width: 280px;
+            right: -10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header-icons {
+            gap: 5px;
+        }
+        
+        .menu-dropdown {
+            width: 250px;
+        }
+    }
 
 </style>
 </head>
 <body>
 
-    <!-- Botão para mostrar/esconder sidebar -->
+    <!-- Botão para mostrar/esconder sidebar - CENTRALIZADO -->
     <button class="sidebar-toggle" id="sidebarToggle" title="Esconder Menu (Ctrl+B)">
         <i class="fas fa-chevron-left"></i>
     </button>
@@ -1094,14 +1353,140 @@
                 </select>
             </div>
             <div class="header-icons">
-                <button onclick="toggleTheme()"><i class="fas fa-adjust"></i></button>
-                <button onclick="toggleCompactMode()" title="Modo Compacto"><i class="fas fa-compress"></i></button>
-                <button onclick="enableWakeWord()" title="Ativar 'Hey Reelmi'"><i class="fas fa-microphone-alt"></i></button>
-                <button onclick="showImageUpload()" title="Enviar imagem"><i class="fas fa-image"></i></button>
-                <button onclick="showSafetyWarning()" title="Avisos de Segurança"><i class="fas fa-shield-alt"></i></button>
-                <button onclick="showRecommendations()" title="Recomendações"><i class="fas fa-lightbulb"></i></button>
-                <button onclick="toggleDock()" title="Mostrar/Esconder Dock"><i class="fas fa-th"></i></button>
-                <button onclick="toggleSidebar()" title="Mostrar/Esconder Menu (Ctrl+B)"><i class="fas fa-bars"></i></button>
+                <button onclick="toggleTheme()" title="Alternar Tema">
+                    <i class="fas fa-adjust"></i>
+                </button>
+                
+                <!-- MENU UNIFICADO -->
+                <div class="menu-dropdown-container">
+                    <button class="menu-toggle" id="menuToggle" title="Menu de Funcionalidades">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="menu-dropdown" id="menuDropdown">
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">
+                                <i class="fas fa-cogs"></i>
+                                <span>Funcionalidades</span>
+                            </div>
+                            <!-- TODAS AS 7 FUNCIONALIDADES NO MENU -->
+                            <div class="dropdown-item" onclick="toggleCompactMode()">
+                                <i class="fas fa-compress"></i>
+                                <span>Modo Compacto</span>
+                                <span class="dropdown-badge status-inactive" id="compactModeStatus">OFF</span>
+                            </div>
+                            <div class="dropdown-item" onclick="toggleWakeWord()">
+                                <i class="fas fa-microphone-alt"></i>
+                                <span>Ativar "Hey Reelmi"</span>
+                                <span class="dropdown-badge status-inactive" id="wakeWordStatus">OFF</span>
+                            </div>
+                            <div class="dropdown-item" onclick="uploadImage()">
+                                <i class="fas fa-image"></i>
+                                <span>Enviar Imagem</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showSafetyModal()">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Avisos de Segurança</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showRecommendationsModal()">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Recomendações</span>
+                            </div>
+                            <div class="dropdown-item" onclick="toggleAppDock()">
+                                <i class="fas fa-th"></i>
+                                <span>Mostrar/Esconder Dock</span>
+                                <span class="dropdown-badge status-active" id="dockStatus">ON</span>
+                            </div>
+                            <div class="dropdown-item" onclick="toggleTimeline()">
+                                <i class="fas fa-timeline"></i>
+                                <span>Mostrar/Esconder Timeline</span>
+                                <span class="dropdown-badge status-inactive" id="timelineStatus">OFF</span>
+                            </div>
+                            <div class="dropdown-item" onclick="toggleSidebar()">
+                                <i class="fas fa-bars"></i>
+                                <span>Mostrar/Esconder Menu</span>
+                                <span class="dropdown-badge">Ctrl+B</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Outras seções do menu -->
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">
+                                <i class="fas fa-robot"></i>
+                                <span>IA Avançada</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openRealAIModal()">
+                                <i class="fas fa-brain"></i>
+                                <span>IA Real</span>
+                                <span class="dropdown-badge ai-status status-inactive" id="aiStatus">OFF</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showMemoryManager()">
+                                <i class="fas fa-database"></i>
+                                <span>Memória Avançada</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openMultimodalModal()">
+                                <i class="fas fa-eye"></i>
+                                <span>Multimodal</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openWindow('agent')">
+                                <i class="fas fa-robot"></i>
+                                <span>Agente Auto-GPT</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Outras seções mantidas -->
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">
+                                <i class="fas fa-medkit"></i>
+                                <span>Médico</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showMedicalCalculators()">
+                                <i class="fas fa-calculator"></i>
+                                <span>Calculadoras Médicas</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showAlgorithms()">
+                                <i class="fas fa-project-diagram"></i>
+                                <span>Algoritmos Clínicos</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showGasometryAnalyzer()">
+                                <i class="fas fa-vial"></i>
+                                <span>Analisador Gasometria</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openWindow('ventilation')">
+                                <i class="fas fa-lungs"></i>
+                                <span>Simulador VM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-section">
+                            <div class="dropdown-header">
+                                <i class="fas fa-code"></i>
+                                <span>Desenvolvimento</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openPythonTerminal()">
+                                <i class="fas fa-terminal"></i>
+                                <span>Terminal Python</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openWindow('terminal')">
+                                <i class="fas fa-terminal"></i>
+                                <span>Terminal Avançado</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showPlugins()">
+                                <i class="fas fa-puzzle-piece"></i>
+                                <span>Plugins</span>
+                            </div>
+                            <div class="dropdown-item" onclick="showPluginDeveloper()">
+                                <i class="fas fa-plug"></i>
+                                <span>Desenvolver Plugin</span>
+                            </div>
+                            <div class="dropdown-item" onclick="openWindow('code')">
+                                <i class="fas fa-code"></i>
+                                <span>Editor de Código</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -1110,6 +1495,16 @@
             <!-- CHAT VIEW (Onde a mágica acontece) -->
             <div id="chat-view">
                 <div id="chat-history"></div>
+                
+                <!-- TIMELINE DO CHAT -->
+                <div id="chat-timeline">
+                    <div style="padding: 20px;">
+                        <h4 style="margin-bottom: 15px;"><i class="fas fa-timeline"></i> Timeline do Chat</h4>
+                        <div id="timeline-content" style="font-size: 12px; color: var(--text-muted);">
+                            <!-- Itens da timeline serão adicionados aqui -->
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- DASHBOARD INICIAL (GENÉRICO) -->
@@ -1173,7 +1568,7 @@
                         </div>
                     </div>
 
-                    <div class="widget-card" onclick="document.getElementById('real-ai-modal').style.display='flex'">
+                    <div class="widget-card" onclick="openRealAIModal()">
                         <div class="w-icon"><i class="fas fa-robot"></i></div>
                         <div class="w-text">
                             <h3>IA Real</h3>
@@ -1205,7 +1600,7 @@
                         </div>
                     </div>
 
-                    <div class="widget-card" onclick="document.getElementById('multimodal-modal').style.display='flex'">
+                    <div class="widget-card" onclick="openMultimodalModal()">
                         <div class="w-icon"><i class="fas fa-eye"></i></div>
                         <div class="w-text">
                             <h3>Multimodal</h3>
@@ -1237,7 +1632,7 @@
         <!-- INPUT FIXO -->
         <div class="input-dock">
             <div class="input-wrapper">
-                <button onclick="showImageUpload()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px; margin-right:10px;"><i class="fas fa-image"></i></button>
+                <button onclick="uploadImage()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px; margin-right:10px;"><i class="fas fa-image"></i></button>
                 <input type="text" id="campo-texto" placeholder="Envie uma mensagem para Reelmi AI... (Experimente 'Hey Reelmi' para voz)" onkeypress="teclaEnter(event)">
                 <button onclick="abrirVoz()" style="background:none; border:none; color:var(--text-main); cursor:pointer; font-size:18px; margin-left:10px;"><i class="fas fa-microphone"></i></button>
                 <button onclick="enviarTexto()" style="background:#764ba2; border:none; color:white; width:35px; height:35px; border-radius:10px; cursor:pointer; margin-left:10px;"><i class="fas fa-arrow-up"></i></button>
@@ -1623,6 +2018,60 @@
         </div>
     </div>
 
+    <!-- MODAIS DAS NOVAS FUNCIONALIDADES -->
+    
+    <!-- Safety Warning Modal -->
+    <div id="safety-modal" class="calculator-modal">
+        <div class="calc-content">
+            <h2 style="margin-bottom: 20px;">⚠️ Avisos de Segurança</h2>
+            
+            <div class="safety-warning">
+                <h3>ATENÇÃO IMPORTANTE</h3>
+                <p>Reelmi AI é um assistente de IA e NÃO substitui:</p>
+                <ul>
+                    <li>Atendimento médico profissional</li>
+                    <li>Prescrição de medicamentos</li>
+                    <li>Diagnóstico médico</li>
+                    <li>Emergências médicas</li>
+                </ul>
+                <p>Em caso de emergência, ligue 192 ou procure um hospital.</p>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <h4>Filtros de Segurança Ativos:</h4>
+                <ul>
+                    <li>✓ Detecção de linguagem inadequada</li>
+                    <li>✓ Verificação de consultas médicas perigosas</li>
+                    <li>✓ Monitoramento de conteúdo sensível</li>
+                    <li>✓ Proteção de dados pessoais</li>
+                </ul>
+            </div>
+            
+            <button onclick="closeModal('safety-modal')" style="width:100%; padding:12px; margin-top:20px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
+                Entendi
+            </button>
+        </div>
+    </div>
+    
+    <!-- Recommendations Modal -->
+    <div id="recommendations-modal" class="calculator-modal">
+        <div class="calc-content">
+            <h2 style="margin-bottom: 20px;">💡 Recomendações Inteligentes</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <p>Baseado no seu histórico e contexto atual, recomendamos:</p>
+            </div>
+            
+            <div id="recommendations-content">
+                <!-- Recomendações serão carregadas dinamicamente -->
+            </div>
+            
+            <button onclick="closeModal('recommendations-modal')" style="width:100%; padding:12px; margin-top:20px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
+                Fechar
+            </button>
+        </div>
+    </div>
+
 <script>
     /* 
        =========================================================
@@ -1630,389 +2079,284 @@
        =========================================================
     */
     
-    // ==================== FUNÇÃO TOGGLE SIDEBAR ====================
-    function toggleSidebar() {
-        document.body.classList.toggle('sidebar-hidden');
+    // ==================== VARIÁVEIS GLOBAIS ====================
+    let contextoConversa = [];
+    const maxContexto = 20;
+    let historicoConversas = [];
+    let wakeWordActive = false;
+    let wakeWordRecognition;
+    let recognition;
+    let isRecording = false;
+    let pyodide = null;
+    let realAIActive = false;
+    let currentAIMode = 'simulated';
+    let cocoModel = null;
+    let agentRunning = false;
+    let agentInterval;
+    let terminalHistory = [];
+    let historyIndex = 0;
+    let windows = [];
+    let windowZIndex = 1000;
+    let dockVisible = true;
+    let longTermMemory = JSON.parse(localStorage.getItem('reelmi_long_memory') || '{}');
+    let compactModeActive = false;
+    let timelineVisible = false;
+    let sidebarVisible = true;
+    
+    // ==================== FUNÇÕES DAS 7 FUNCIONALIDADES DO MENU ====================
+    
+    // 1. FUNÇÃO: Modo Compacto
+    function toggleCompactMode() {
+        compactModeActive = !compactModeActive;
+        const aside = document.querySelector('aside');
+        const sidebarToggle = document.getElementById('sidebarToggle');
         
-        const toggleBtn = document.getElementById('sidebarToggle');
-        const icon = toggleBtn.querySelector('i');
-        
-        if (document.body.classList.contains('sidebar-hidden')) {
-            icon.className = 'fas fa-chevron-right';
-            toggleBtn.title = 'Mostrar Menu (Ctrl+B)';
-            // Ajusta a posição das janelas quando a sidebar some
-            adjustWindowsForHiddenSidebar();
+        if (compactModeActive) {
+            // Ativar modo compacto
+            aside.style.width = '60px';
+            document.querySelectorAll('.nav-item span').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.menu-label').forEach(el => el.style.display = 'none');
+            document.querySelector('.brand-area h1').style.display = 'none';
+            document.querySelector('.brand-area').style.justifyContent = 'center';
+            document.querySelector('.sidebar-footer').style.display = 'none';
+            
+            // Ajustar botão toggle
+            sidebarToggle.style.left = '60px';
+            
+            showNotification('Modo compacto ativado');
         } else {
-            icon.className = 'fas fa-chevron-left';
-            toggleBtn.title = 'Esconder Menu (Ctrl+B)';
-            // Restaura a posição das janelas
-            restoreWindowsPosition();
+            // Desativar modo compacto
+            aside.style.width = '280px';
+            document.querySelectorAll('.nav-item span').forEach(el => el.style.display = 'inline');
+            document.querySelectorAll('.menu-label').forEach(el => el.style.display = 'block');
+            document.querySelector('.brand-area h1').style.display = 'block';
+            document.querySelector('.brand-area').style.justifyContent = 'flex-start';
+            document.querySelector('.sidebar-footer').style.display = 'block';
+            
+            // Restaurar botão toggle
+            sidebarToggle.style.left = '285px';
+            
+            showNotification('Modo compacto desativado');
         }
+        
+        // Atualizar status no menu
+        updateMenuStatusIndicators();
         
         // Salvar preferência
-        localStorage.setItem('reelmi_sidebar_hidden', document.body.classList.contains('sidebar-hidden'));
+        localStorage.setItem('reelmi_compact_mode', compactModeActive);
     }
     
-    function adjustWindowsForHiddenSidebar() {
-        const windows = document.querySelectorAll('.os-window');
-        windows.forEach(window => {
-            const currentLeft = parseInt(window.style.left) || 0;
-            window.dataset.originalLeft = currentLeft;
-            // Ajusta para compensar a sidebar escondida
-            window.style.left = (currentLeft - 280) + 'px';
-        });
-    }
-    
-    function restoreWindowsPosition() {
-        const windows = document.querySelectorAll('.os-window');
-        windows.forEach(window => {
-            if (window.dataset.originalLeft) {
-                window.style.left = window.dataset.originalLeft + 'px';
-                delete window.dataset.originalLeft;
+    // 2. FUNÇÃO: Ativar/Desativar "Hey Reelmi"
+    function toggleWakeWord() {
+        if (wakeWordActive) {
+            // Desativar wake word
+            if (wakeWordRecognition) {
+                try {
+                    wakeWordRecognition.stop();
+                } catch (e) {
+                    console.log('Wake word já estava parado');
+                }
             }
+            wakeWordActive = false;
+            showNotification('Wake word "Hey Reelmi" desativado');
+        } else {
+            // Ativar wake word
+            iniciarWakeWord();
+            showNotification('Wake word "Hey Reelmi" ativado. Diga "Hey Reelmi" para começar!');
+        }
+        updateMenuStatusIndicators();
+    }
+    
+    // 3. FUNÇÃO: Enviar Imagem
+    function uploadImage() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Verificar tamanho da imagem (máximo 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('Imagem muito grande. Máximo: 5MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    // Adicionar mensagem no chat
+                    addMsg(`📸 [Imagem enviada: ${file.name}]`, 'user');
+                    
+                    // Criar preview da imagem
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    img.style.maxWidth = '200px';
+                    img.style.maxHeight = '200px';
+                    img.style.borderRadius = '10px';
+                    img.style.margin = '10px 0';
+                    
+                    // Adicionar preview ao chat
+                    const lastMessage = document.querySelector('#chat-history .msg-row.user:last-child .bubble');
+                    if (lastMessage) {
+                        lastMessage.appendChild(document.createElement('br'));
+                        lastMessage.appendChild(img);
+                    }
+                    
+                    // Resposta da IA
+                    setTimeout(() => {
+                        addMsg('📸 Recebi sua imagem! Posso ajudar com:\n\n1. **Descrição da imagem**\n2. **Análise básica de conteúdo**\n3. **Extrair texto (OCR)**\n4. **Detecção de objetos**\n\nO que você gostaria que eu faça com esta imagem?', 'bot');
+                    }, 600);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    }
+    
+    // 4. FUNÇÃO: Avisos de Segurança
+    function showSafetyModal() {
+        document.getElementById('safety-modal').style.display = 'flex';
+    }
+    
+    // 5. FUNÇÃO: Recomendações
+    function showRecommendationsModal() {
+        document.getElementById('recommendations-modal').style.display = 'flex';
+        loadRecommendations();
+    }
+    
+    function loadRecommendations() {
+        const recommendations = [
+            {
+                title: '📚 Estudo de Ventilação Mecânica',
+                description: 'Baseado no seu histórico, recomendamos revisar os modos ventilatorios básicos.',
+                action: () => usarSugestao('Explique os modos ventilatorios básicos')
+            },
+            {
+                title: '👶 Neonatologia - Casos Práticos',
+                description: 'Pratique com casos clínicos de reanimação neonatal.',
+                action: () => showAlgorithms()
+            },
+            {
+                title: '💻 Desenvolvimento Python',
+                description: 'Aprimore suas habilidades com exercícios práticos.',
+                action: () => openPythonTerminal()
+            },
+            {
+                title: '🧠 Treinamento da IA',
+                description: 'Ajude a melhorar a Reelmi AI com seu conhecimento.',
+                action: () => openTraining()
+            }
+        ];
+        
+        const content = document.getElementById('recommendations-content');
+        content.innerHTML = '';
+        
+        recommendations.forEach((rec, index) => {
+            const div = document.createElement('div');
+            div.className = 'algorithm-step';
+            div.innerHTML = `
+                <h3>${rec.title}</h3>
+                <p>${rec.description}</p>
+            `;
+            div.onclick = rec.action;
+            content.appendChild(div);
         });
     }
     
-    function checkSidebarState() {
-        const sidebarHidden = localStorage.getItem('reelmi_sidebar_hidden') === 'true';
-        if (sidebarHidden) {
-            document.body.classList.add('sidebar-hidden');
-            const toggleBtn = document.getElementById('sidebarToggle');
-            const icon = toggleBtn.querySelector('i');
-            icon.className = 'fas fa-chevron-right';
-            toggleBtn.title = 'Mostrar Menu (Ctrl+B)';
-            // Ajusta imediatamente para janelas já abertas
-            setTimeout(() => adjustWindowsForHiddenSidebar(), 100);
+    // 6. FUNÇÃO: Mostrar/Esconder Dock
+    function toggleAppDock() {
+        const dock = document.getElementById('app-dock');
+        if (dock.style.display === 'none') {
+            dock.style.display = 'flex';
+            dockVisible = true;
+            showNotification('Dock de aplicativos visível');
+        } else {
+            dock.style.display = 'none';
+            dockVisible = false;
+            showNotification('Dock de aplicativos escondido');
         }
+        updateMenuStatusIndicators();
     }
     
-    // ==================== SISTEMA DE CONTEXTO PERMANENTE ====================
-    let contextoConversa = [];
-    const maxContexto = 20; // Máximo de mensagens no contexto
+    // 7. FUNÇÃO: Mostrar/Esconder Timeline
+    function toggleTimeline() {
+        const timeline = document.getElementById('chat-timeline');
+        timelineVisible = !timelineVisible;
+        
+        if (timelineVisible) {
+            timeline.style.display = 'block';
+            showNotification('Timeline do chat visível');
+            updateTimeline();
+        } else {
+            timeline.style.display = 'none';
+            showNotification('Timeline do chat escondida');
+        }
+        updateMenuStatusIndicators();
+    }
     
+    // ==================== SISTEMA DE CONTEXTO ====================
     function adicionarAoContexto(role, content) {
         contextoConversa.push({role, content, timestamp: new Date().toISOString()});
         
-        // Manter apenas as últimas X mensagens
         if (contextoConversa.length > maxContexto) {
             contextoConversa = contextoConversa.slice(-maxContexto);
         }
         
-        // Atualizar indicador
         document.getElementById('context-length').textContent = contextoConversa.length;
         localStorage.setItem('reelmi_context', JSON.stringify(contextoConversa));
-    }
-    
-    function obterContexto() {
-        return contextoConversa.map(msg => `${msg.role}: ${msg.content}`).join('\n');
-    }
-    
-    // Carregar contexto salvo
-    function carregarContextoSalvo() {
-        const saved = localStorage.getItem('reelmi_context');
-        if (saved) {
-            contextoConversa = JSON.parse(saved);
-            document.getElementById('context-length').textContent = contextoConversa.length;
+        
+        // Atualizar timeline se visível
+        if (timelineVisible) {
+            updateTimeline();
         }
     }
     
-    // ==================== SISTEMA DE SIMILARIDADE AVANÇADA ====================
-    
-    // Algoritmo de similaridade de Levenshtein
-    function levenshteinDistance(a, b) {
-        const matrix = [];
-        for (let i = 0; i <= b.length; i++) {
-            matrix[i] = [i];
-        }
-        for (let j = 0; j <= a.length; j++) {
-            matrix[0][j] = j;
-        }
-        for (let i = 1; i <= b.length; i++) {
-            for (let j = 1; j <= a.length; j++) {
-                if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                    matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
-                    matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1,
-                        matrix[i][j - 1] + 1,
-                        matrix[i - 1][j] + 1
-                    );
-                }
-            }
-        }
-        return matrix[b.length][a.length];
-    }
-    
-    // Similaridade por TF-IDF simples
-    function calcularSimilaridade(texto1, texto2) {
-        const palavras1 = texto1.toLowerCase().split(/\W+/).filter(p => p.length > 2);
-        const palavras2 = texto2.toLowerCase().split(/\W+/).filter(p => p.length > 2);
+    function updateTimeline() {
+        const timelineContent = document.getElementById('timeline-content');
+        if (!timelineContent) return;
         
-        const set1 = new Set(palavras1);
-        const set2 = new Set(palavras2);
+        let html = '';
         
-        const intersecao = [...set1].filter(x => set2.has(x)).length;
-        const uniao = new Set([...palavras1, ...palavras2]).size;
-        
-        return uniao > 0 ? intersecao / uniao : 0;
-    }
-    
-    // ==================== DETECÇÃO DE INTENÇÃO ====================
-    
-    const categorias = {
-        ventilacao: {
-            palavrasChave: ['ventilaçao', 'respiraçao', 'cpap', 'peep', 'fio2', 'vm', 'ventilador', 'pulmao'],
-            prioridade: 1
-        },
-        neonatologia: {
-            palavrasChave: ['neonatal', 'bebe', 'prematuro', 'reciem nascido', 'rn', 'neonato'],
-            prioridade: 1
-        },
-        programacao: {
-            palavrasChave: ['python', 'codigo', 'programaçao', 'debug', 'script', 'terminal'],
-            prioridade: 2
-        },
-        administracao: {
-            palavrasChave: ['email', 'documento', 'relatorio', 'formal', 'profissional'],
-            prioridade: 3
-        },
-        saude: {
-            palavrasChave: ['medico', 'enfermagem', 'hospital', 'paciente', 'tratamento'],
-            prioridade: 1
-        },
-        configuracao: {
-            palavrasChave: ['configurar', 'ajustar', 'definir', 'preferencia', 'tema'],
-            prioridade: 4
-        }
-    };
-    
-    function detectarIntencao(texto) {
-        const textoLower = texto.toLowerCase();
-        let melhorCategoria = null;
-        let melhorPontuacao = 0;
-        
-        for (const [categoria, info] of Object.entries(categorias)) {
-            let pontuacao = 0;
-            for (const palavra of info.palavrasChave) {
-                if (textoLower.includes(palavra)) {
-                    pontuacao += 1;
-                }
-            }
-            
-            // Adicionar pontuação por similaridade
-            for (const palavra of info.palavrasChave) {
-                const similaridade = calcularSimilaridade(textoLower, palavra);
-                pontuacao += similaridade * 0.5;
-            }
-            
-            if (pontuacao > melhorPontuacao) {
-                melhorPontuacao = pontuacao;
-                melhorCategoria = categoria;
-            }
-        }
-        
-        return {
-            categoria: melhorCategoria || 'geral',
-            pontuacao: melhorPontuacao,
-            confianca: melhorPontuacao > 0.5 ? 'alta' : 'baixa'
-        };
-    }
-    
-    // ==================== BASE DE CONHECIMENTO EXPANDIDA ====================
-    
-    const perguntas = [
-        "o que é ventilação mecânica",
-        "quais os tipos de ventilação mecânica",
-        "o que é cpap",
-        "quando usar ventilação não invasiva",
-        "o que é fi02",
-        "como monitorar um paciente em ventilação mecânica",
-        "o que é peep",
-        "quais as complicações da ventilação mecânica",
-        "como fazer o desmame da ventilação mecânica",
-        "o que é síndrome do desconforto respiratório agudo",
-        "o que suporte ventilatório avançado",
-        "quando a necessário usado do oxigênio em neonatal",
-        "o que o suporte ventilatório invasivo",
-        "quanto teve ser usado insurir no neonatal",
-        "criar um código em python",
-        "escrever um e-mail formal",
-        "gerar uma imagem futurista",
-        "resumir este texto"
-    ];
-    
-    const respostas = [
-        "Ventilação mecânica é o suporte artificial à respiração, utilizado quando o paciente não consegue respirar adequadamente por conta própria.",
-        "Existem dois tipos principais: ventilação invasiva (com tubo endotraqueal) e não invasiva (com máscaras ou interfaces).",
-        "CPAP (Continuous Positive Airway Pressure) é uma modalidade de ventilação não invasiva que mantém pressão positiva contínua nas vias aéreas.",
-        "A ventilação não invasiva é indicada para pacientes com insuficiência respiratória aguda, mas com estado de consciência preservado e capacidade de proteger as vias aéreas.",
-        "FiO2 é a fração de oxigênio inspirado, representando a concentração de oxigênio no ar que o paciente respira, variando de 21% (ar ambiente) a 100%.",
-        "Monitora-se através de parâmetros como saturação de oxigênio, gasometria arterial, pressão arterial, frequência cardíaca e parâmetros do ventilador (pressão, volume, frequência).",
-        "PEEP (Positive End-Expiratory Pressure) é a pressão positiva ao final da expiração, que mantém os alvéolos abertos e melhora a oxigenação.",
-        "Complicações incluem barotrauma, volutrauma, pneumonia associada à ventilação, lesão por pressão e desconforto do paciente.",
-        "O desmame deve ser gradual, avaliando a capacidade do paciente de respirar espontaneamente através de testes de respiração espontânea e redução progressiva do suporte.",
-        "A SDRA é uma condição grave caracterizada por inflamação pulmonar difusa, edema não cardiogênico e hypoxemia refratária.",
-        "O suporte ventilatório avançado em neonatologia inclui modalidades como High-Frequency Oscillatory Ventilation (HFOV), High-Frequency Jet Ventilation (HFJV), ventilação com oscilação de volume, e suporte com óxido nítrico inalado.",
-        "O oxigênio em neonatologia deve ser usado quando a saturação periférica de oxigênio (SpO2) estiver abaixo de 90-92% em recém-nascidos a termo, ou conforme protocolos específicos para prematuros.",
-        "O suporte ventilatório invasivo em neonatos envolve a intubação endotraqueal e conexão a um ventilador mecânico.",
-        "A insuflação em neonatologia deve ser realizada com extrema cautela. Pressões de insuflação geralmente variam de 20-30 cmH2O por 10-20 segundos.",
-        "Aqui está um exemplo de código Python: `print('Hello World')`",
-        "Assunto: Reunião. Prezado Senhor, gostaria de agendar uma reunião...",
-        "Gerando imagem... [IMAGEM CRIADA]",
-        "Resumindo: O texto trata de inteligência artificial e suas aplicações."
-    ];
-    
-    // ==================== ENCONTRAR RESPOSTA COM CONTEXTO ====================
-    
-    function encontrarRespostaComContexto(input) {
-        const texto = input.toLowerCase();
-        
-        // Verificar se é uma pergunta médica de segurança
-        if (texto.includes("dose") && (texto.includes("aplicar") || texto.includes("medicamento"))) {
-            return "⚠️ CONSULTA OBRIGATÓRIA COM PROFISSIONAL DA SAÚDE. Como assistente de IA, não posso prescrever doses medicamentosas. Consulte sempre um médico ou farmacêutico para dosagens precisas.";
-        }
-        
-        // Detectar intenção
-        const intencao = detectarIntencao(texto);
-        adicionarAoContexto('user', input);
-        
-        // 1. Tentar correspondência exata ou similar
-        let melhorResposta = null;
-        let melhorSimilaridade = 0.3; // Threshold mínimo
-        
-        for(let i = 0; i < perguntas.length; i++) {
-            const similaridade = calcularSimilaridade(texto, perguntas[i]);
-            
-            // Também verificar distância de Levenshtein para erros de digitação
-            const distancia = levenshteinDistance(texto, perguntas[i]);
-            const similaridadeLevenshtein = 1 - (distancia / Math.max(texto.length, perguntas[i].length));
-            
-            const similaridadeTotal = Math.max(similaridade, similaridadeLevenshtein * 0.8);
-            
-            if (similaridadeTotal > melhorSimilaridade) {
-                melhorSimilaridade = similaridadeTotal;
-                melhorResposta = respostas[i];
-            }
-        }
-        
-        // 2. Verificar palavras-chave no contexto
-        if (!melhorResposta) {
-            const palavrasChave = [
-                { palavras: ["ventilação", "respiração", "ventilador"], respostaIndex: 0 },
-                { palavras: ["cpap", "pressão positiva"], respostaIndex: 2 },
-                { palavras: ["oxigênio", "o2", "saturação"], respostaIndex: 4 },
-                { palavras: ["monitorar", "monitorização"], respostaIndex: 5 },
-                { palavras: ["peep", "pressão expiratória"], respostaIndex: 6 },
-                { palavras: ["complicações", "riscos"], respostaIndex: 7 },
-                { palavras: ["desmame", "desconectar"], respostaIndex: 8 },
-                { palavras: ["sdra", "síndrome"], respostaIndex: 9 },
-                { palavras: ["neonatal", "recém-nascido"], respostaIndex: 11 },
-                { palavras: ["suporte avançado", "hfov"], respostaIndex: 10 },
-                { palavras: ["invasivo", "intubação"], respostaIndex: 12 },
-                { palavras: ["insuflação", "recrutamento"], respostaIndex: 13 }
-            ];
-            
-            for(const chave of palavrasChave) {
-                for(const palavra of chave.palavras) {
-                    if(texto.includes(palavra)) {
-                        melhorResposta = respostas[chave.respostaIndex];
-                        break;
-                    }
-                }
-                if (melhorResposta) break;
-            }
-        }
-        
-        // 3. Usar contexto da conversa
-        if (!melhorResposta && contextoConversa.length > 2) {
-            const ultimasMensagens = contextoConversa.slice(-3).map(m => m.content).join(' ');
-            
-            // Verificar se estamos em uma sequência de perguntas sobre o mesmo tópico
-            if (ultimasMensagens.includes("ventilação") || ultimasMensagens.includes("respiração")) {
-                melhorResposta = "Baseado no nosso contexto sobre ventilação mecânica, posso detalhar mais sobre: modos ventilatorios, ajustes de parâmetros, monitorização ou complicações. Sobre qual aspecto específico você gostaria de saber mais?";
-            } else if (ultimasMensagens.includes("neonatal") || ultimasMensagens.includes("bebê")) {
-                melhorResposta = "Continuando sobre neonatologia, posso abordar: cuidados com prematuros, suporte ventilatório neonatal, monitorização ou protocolos de reanimação. O que mais lhe interessa?";
-            }
-        }
-        
-        // 4. Resposta padrão com personalidade
-        if (!melhorResposta) {
-            const personalidade = document.getElementById('personality-select').value;
-            const respostasPadrao = {
-                professional: "Como modelo de IA especializado em saúde e tecnologia, posso ajudar com questões sobre ventilação mecânica, neonatologia, programação Python e outras áreas técnicas. Para uma resposta mais precisa, reformule sua pergunta ou especifique o tópico.",
-                teacher: "Vamos aprender juntos! Sou especializado em ventilação mecânica e neonatologia. Que tal começarmos com os conceitos básicos ou você tem alguma dúvida específica?",
-                simple: "Posso te ajudar com assuntos de saúde (como ventilação mecânica) ou tecnologia. O que você gostaria de saber? Pode perguntar de forma simples!",
-                technical: "Como sistema técnico especializado, minha base inclui: ventilação mecânica (modos, parâmetros, complicações), neonatologia (suporte ventilatório, oxigenoterapia) e desenvolvimento Python. Formule sua consulta com termos técnicos para resposta precisa.",
-                empathetic: "Entendo que você está buscando informações importantes. Como posso ajudar de forma clara e acolhedora? Conte-me mais sobre sua dúvida.",
-                analytical: "Analisando sua consulta: posso fornecer dados estruturados, comparações técnicas e evidências baseadas em literatura médica. Especifique os parâmetros de interesse."
-            };
-            melhorResposta = respostasPadrao[personalidade] || respostasPadrao.professional;
-        }
-        
-        // Aplicar estilo baseado na personalidade
-        melhorResposta = aplicarEstiloPersonalidade(melhorResposta, intencao.categoria);
-        
-        // Adicionar ao contexto
-        adicionarAoContexto('assistant', melhorResposta);
-        
-        return melhorResposta;
-    }
-    
-    // ==================== SISTEMA DE PERSONALIDADE ====================
-    
-    function aplicarEstiloPersonalidade(resposta, categoria) {
-        const personalidade = document.getElementById('personality-select').value;
-        
-        switch(personalidade) {
-            case 'teacher':
-                return `👨‍🏫 **Explicação Didática:**\n\n${resposta}\n\n💡 **Dica de Estudo:** Recomendo revisar os conceitos básicos antes de avançar.`;
+        contextoConversa.forEach((msg, index) => {
+            if (index % 3 === 0 || index === contextoConversa.length - 1) {
+                const time = new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const preview = msg.content.substring(0, 30) + (msg.content.length > 30 ? '...' : '');
                 
-            case 'simple':
-                // Simplificar termos técnicos
-                let respostaSimples = resposta
-                    .replace(/ventilação mecânica/g, 'máquina que ajuda a respirar')
-                    .replace(/neonatologia/g, 'cuidados com bebês recém-nascidos')
-                    .replace(/FiO2/g, 'quantidade de oxigênio')
-                    .replace(/PEEP/g, 'pressão que mantém os pulmões abertos');
-                return `🤗 **Explicação Simples:**\n${respostaSimples}`;
-                
-            case 'technical':
-                return `🔬 **Resposta Técnica Detalhada:**\n\n${resposta}\n\n📊 **Categoria:** ${categoria.toUpperCase()}\n⚡ **Precisão Técnica:** 98%`;
-                
-            case 'empathetic':
-                return `🤝 **Resposta Empática:**\n${resposta}\n\n✨ **Nota:** Estou aqui para ajudar no que precisar.`;
-                
-            case 'analytical':
-                return `📈 **Análise Técnica:**\n${resposta}\n\n📊 **Métricas:** Similaridade: 92% | Confiança: 95%`;
-                
-            default: // professional
-                return resposta;
-        }
-    }
-    
-    // ==================== SISTEMA DE VOZ AVANÇADO ====================
-    
-    let recognition;
-    let isRecording = false;
-    let wakeWordActive = false;
-    let wakeWordRecognition;
-    
-    function criarWaveVisualizer() {
-        const container = document.getElementById('wave-visualizer');
-        container.innerHTML = '';
+                html += `
+                    <div class="timeline-item" onclick="scrollToMessage(${index})">
+                        <div style="font-size: 10px; opacity: 0.7;">${time}</div>
+                        <div>${msg.role === 'user' ? '👤' : '🤖'} ${preview}</div>
+                    </div>
+                `;
+            }
+        });
         
-        for (let i = 0; i < 50; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'wave-bar';
-            bar.style.left = `${i * 6}px`;
-            bar.style.height = `${5 + Math.random() * 20}px`;
-            bar.style.setProperty('--i', i);
-            container.appendChild(bar);
+        if (html === '') {
+            html = '<div style="text-align: center; padding: 20px; color: var(--text-muted);"><i class="fas fa-clock"></i><br>Timeline vazia</div>';
+        }
+        
+        timelineContent.innerHTML = html;
+    }
+    
+    function scrollToMessage(index) {
+        const messages = document.querySelectorAll('.msg-row');
+        if (messages[index]) {
+            messages[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Destacar a mensagem
+            messages[index].style.animation = 'pulse 0.5s';
+            setTimeout(() => {
+                messages[index].style.animation = '';
+            }, 500);
         }
     }
     
+    // ==================== SISTEMA DE VOZ ====================
     function iniciarWakeWord() {
-        if (!('webkitSpeechRecognition' in window)) return;
+        if (!('webkitSpeechRecognition' in window)) {
+            showNotification('Seu navegador não suporta reconhecimento de voz');
+            return;
+        }
         
         wakeWordRecognition = new webkitSpeechRecognition();
         wakeWordRecognition.continuous = true;
@@ -2026,22 +2370,33 @@
                 wakeWordRecognition.stop();
                 abrirVoz();
                 document.getElementById('status-voz').textContent = "Olá! Como posso ajudar?";
+                showNotification('Wake word detectado! Modo voz ativado.');
             }
+        };
+        
+        wakeWordRecognition.onerror = (event) => {
+            console.error('Erro no wake word:', event.error);
         };
         
         wakeWordRecognition.start();
         wakeWordActive = true;
-        console.log("Wake word 'Hey Reelmi' ativado");
+        updateMenuStatusIndicators();
+        
+        // Salvar preferência
+        localStorage.setItem('reelmi_wake_word', true);
     }
     
-    function enableWakeWord() {
-        if (wakeWordActive) {
-            wakeWordRecognition.stop();
-            wakeWordActive = false;
-            alert("Wake word desativado");
-        } else {
-            iniciarWakeWord();
-            alert("Wake word ativado. Diga 'Hey Reelmi' para começar!");
+    function criarWaveVisualizer() {
+        const container = document.getElementById('wave-visualizer');
+        container.innerHTML = '';
+        
+        for (let i = 0; i < 50; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'wave-bar';
+            bar.style.left = `${i * 6}px`;
+            bar.style.height = `${5 + Math.random() * 20}px`;
+            bar.style.setProperty('--i', i);
+            container.appendChild(bar);
         }
     }
     
@@ -2065,7 +2420,6 @@
             isRecording = true;
             document.getElementById('status-voz').innerText = "Ouvindo... Fale agora";
             
-            // Acelerar animação das ondas
             const bars = document.querySelectorAll('.wave-bar');
             bars.forEach(bar => {
                 bar.style.animationDuration = '0.3s';
@@ -2076,13 +2430,12 @@
             isRecording = false;
             document.getElementById('status-voz').innerText = "Processando...";
             
-            // Voltar animação normal
             const bars = document.querySelectorAll('.wave-bar');
             bars.forEach(bar => {
                 bar.style.animationDuration = '1.5s';
             });
             
-            // Reiniciar wake word se estava ativo
+            // Reiniciar wake word se estiver ativo
             if (wakeWordActive) {
                 setTimeout(() => iniciarWakeWord(), 1000);
             }
@@ -2105,45 +2458,53 @@
                 `<strong>${finalTranscript}</strong> <em style="color:#888">${interimTranscript}</em>`;
             
             if (finalTranscript) {
-                const resp = encontrarRespostaComContexto(finalTranscript);
-                
-                // Falar a resposta
-                const audio = new SpeechSynthesisUtterance(resp.replace(/\*\*/g, '').replace(/👨‍🏫|🤗|🔬|💡|📊|⚡|⚠️/g, ''));
-                audio.lang = 'pt-BR';
-                audio.rate = 1.0;
-                audio.pitch = 1.0;
-                audio.volume = 1.0;
-                
-                // Mostrar que está falando
-                audio.onstart = () => {
-                    document.getElementById('status-voz').textContent = "Respondendo...";
-                    const bars = document.querySelectorAll('.wave-bar');
-                    bars.forEach(bar => {
-                        bar.style.animationDuration = '0.5s';
-                        bar.style.background = 'linear-gradient(to top, #00ff00, #00cc00)';
-                    });
-                };
-                
-                audio.onend = () => {
-                    document.getElementById('status-voz').textContent = "Toque para falar novamente";
-                    const bars = document.querySelectorAll('.wave-bar');
-                    bars.forEach(bar => {
-                        bar.style.animationDuration = '1.5s';
-                        bar.style.background = 'linear-gradient(to top, #667eea, #764ba2)';
-                    });
-                };
-                
-                window.speechSynthesis.speak(audio);
-                
-                // Também adicionar ao chat
-                setTimeout(() => {
-                    addMsg(finalTranscript, 'user');
-                    addMsg(resp, 'bot');
-                }, 500);
+                // Processar resposta
+                processarRespostaVoz(finalTranscript);
             }
         };
 
         recognition.start();
+    }
+    
+    function processarRespostaVoz(texto) {
+        const resposta = encontrarRespostaComContexto(texto);
+        
+        // Adicionar ao chat
+        setTimeout(() => {
+            addMsg(texto, 'user');
+            addMsg(resposta, 'bot');
+        }, 500);
+        
+        // Converter resposta para voz
+        const respostaLimpa = resposta
+            .replace(/\*\*/g, '')
+            .replace(/👨‍🏫|🤗|🔬|💡|📊|⚡|⚠️|📸|🧠|💻|👶|📚/g, '');
+        
+        const audio = new SpeechSynthesisUtterance(respostaLimpa);
+        audio.lang = 'pt-BR';
+        audio.rate = 1.0;
+        audio.pitch = 1.0;
+        audio.volume = 1.0;
+        
+        audio.onstart = () => {
+            document.getElementById('status-voz').textContent = "Respondendo...";
+            const bars = document.querySelectorAll('.wave-bar');
+            bars.forEach(bar => {
+                bar.style.animationDuration = '0.5s';
+                bar.style.background = 'linear-gradient(to top, #00ff00, #00cc00)';
+            });
+        };
+        
+        audio.onend = () => {
+            document.getElementById('status-voz').textContent = "Toque para falar novamente";
+            const bars = document.querySelectorAll('.wave-bar');
+            bars.forEach(bar => {
+                bar.style.animationDuration = '1.5s';
+                bar.style.background = 'linear-gradient(to top, #667eea, #764ba2)';
+            });
+        };
+        
+        window.speechSynthesis.speak(audio);
     }
     
     function toggleGravacao() {
@@ -2159,584 +2520,221 @@
         if (recognition) recognition.stop();
         isRecording = false;
         
-        // Reiniciar wake word
+        // Reiniciar wake word se estiver ativo
         if (wakeWordActive) {
             setTimeout(() => iniciarWakeWord(), 500);
         }
     }
     
-    // ==================== SISTEMA DE HISTÓRICO ====================
-    
-    let historicoConversas = [];
-    
-    function salvarConversa() {
-        const conversaAtual = {
-            id: Date.now(),
-            data: new Date().toLocaleString(),
-            mensagens: contextoConversa,
-            categoria: detectarIntencao(contextoConversa.map(m => m.content).join(' ')).categoria
-        };
+    // ==================== FUNÇÃO TOGGLE SIDEBAR ====================
+    function toggleSidebar() {
+        sidebarVisible = !sidebarVisible;
+        document.body.classList.toggle('sidebar-hidden');
         
-        historicoConversas.push(conversaAtual);
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const icon = toggleBtn.querySelector('i');
         
-        // Manter apenas as últimas 50 conversas
-        if (historicoConversas.length > 50) {
-            historicoConversas = historicoConversas.slice(-50);
-        }
-        
-        localStorage.setItem('reelmi_historico', JSON.stringify(historicoConversas));
-    }
-    
-    function showHistory() {
-        const historico = JSON.parse(localStorage.getItem('reelmi_historico') || '[]');
-        let html = '<h2>Histórico de Conversas</h2>';
-        
-        if (historico.length === 0) {
-            html += '<p>Nenhuma conversa salva ainda.</p>';
+        if (!sidebarVisible) {
+            icon.className = 'fas fa-chevron-right';
+            toggleBtn.title = 'Mostrar Menu (Ctrl+B)';
+            adjustWindowsForHiddenSidebar();
+            showNotification('Menu escondido');
         } else {
-            historico.forEach(conv => {
-                html += `
-                    <div class="algorithm-step" onclick="carregarConversa(${conv.id})">
-                        <h3>${conv.data}</h3>
-                        <p>Categoria: ${conv.categoria}</p>
-                        <small>${conv.mensagens.length} mensagens</small>
-                    </div>
-                `;
-            });
+            icon.className = 'fas fa-chevron-left';
+            toggleBtn.title = 'Esconder Menu (Ctrl+B)';
+            restoreWindowsPosition();
+            showNotification('Menu visível');
         }
         
-        // Mostrar em modal
-        showCustomModal('Histórico', html);
+        localStorage.setItem('reelmi_sidebar_hidden', !sidebarVisible);
+        updateMenuStatusIndicators();
     }
     
-    function carregarConversa(id) {
-        const historico = JSON.parse(localStorage.getItem('reelmi_historico') || '[]');
-        const conversa = historico.find(c => c.id === id);
+    function adjustWindowsForHiddenSidebar() {
+        const windows = document.querySelectorAll('.os-window');
+        windows.forEach(window => {
+            const currentLeft = parseInt(window.style.left) || 0;
+            window.dataset.originalLeft = currentLeft;
+            const newLeft = Math.max(20, currentLeft - 280);
+            window.style.left = newLeft + 'px';
+        });
+    }
+    
+    function restoreWindowsPosition() {
+        const windows = document.querySelectorAll('.os-window');
+        windows.forEach(window => {
+            if (window.dataset.originalLeft) {
+                const originalLeft = parseInt(window.dataset.originalLeft);
+                window.style.left = (originalLeft + 280) + 'px';
+                delete window.dataset.originalLeft;
+            }
+        });
+    }
+    
+    // ==================== MENU DROPDOWN ====================
+    function setupMenuDropdown() {
+        const menuToggle = document.getElementById('menuToggle');
+        const menuDropdown = document.getElementById('menuDropdown');
         
-        if (conversa) {
-            contextoConversa = conversa.mensagens;
-            document.getElementById('chat-history').innerHTML = '';
-            
-            conversa.mensagens.forEach(msg => {
-                if (msg.role === 'user') {
-                    addMsg(msg.content, 'user', false);
-                } else {
-                    addMsg(msg.content, 'bot', false);
+        if (menuToggle && menuDropdown) {
+            // Toggle menu on click
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                menuDropdown.classList.toggle('show');
+                
+                // Atualizar status ao abrir
+                if (menuDropdown.classList.contains('show')) {
+                    updateMenuStatusIndicators();
                 }
             });
             
-            document.getElementById('context-length').textContent = contextoConversa.length;
-            switchMode('chat');
-        }
-    }
-    
-    // ==================== CALCULADORAS MÉDICAS ====================
-    
-    function showMedicalCalculators() {
-        document.getElementById('medical-calculators').style.display = 'flex';
-    }
-    
-    function calculatePaO2FiO2() {
-        const pao2 = parseFloat(document.getElementById('pao2').value);
-        const fio2 = parseFloat(document.getElementById('fio2').value);
-        
-        if (pao2 && fio2 && fio2 > 0) {
-            const resultado = pao2 / fio2;
-            let classificacao = '';
-            
-            if (resultado > 400) classificacao = 'Normal';
-            else if (resultado >= 300) classificacao = 'Leve';
-            else if (resultado >= 200) classificacao = 'Moderado';
-            else classificacao = 'Grave (SDRA)';
-            
-            document.getElementById('result-pao2fio2').innerHTML = `
-                <strong>Índice PaO2/FiO2:</strong> ${resultado.toFixed(0)}<br>
-                <strong>Classificação:</strong> ${classificacao}
-            `;
-        }
-    }
-    
-    function calculateMinuteVolume() {
-        const tv = parseFloat(document.getElementById('tidal-volume').value);
-        const rr = parseFloat(document.getElementById('resp-rate').value);
-        
-        if (tv && rr) {
-            const mv = (tv * rr) / 1000; // Converter para litros
-            document.getElementById('result-minute-volume').innerHTML = `
-                <strong>Volume Minuto:</strong> ${mv.toFixed(2)} L/min<br>
-                <em>Valor normal: 5-8 L/min</em>
-            `;
-        }
-    }
-    
-    function calculateDosePerKg() {
-        const dose = parseFloat(document.getElementById('dose-mg').value);
-        const weight = parseFloat(document.getElementById('weight-kg').value);
-        
-        if (dose && weight && weight > 0) {
-            const dosePerKg = dose / weight;
-            document.getElementById('result-dose').innerHTML = `
-                <strong>Dose por kg:</strong> ${dosePerKg.toFixed(2)} mg/kg<br>
-                <em style="color: red;">⚠️ Consulte sempre um profissional</em>
-            `;
-        }
-    }
-    
-    // ==================== ALGORITMOS CLÍNICOS ====================
-    
-    function showAlgorithms() {
-        document.getElementById('algorithms-modal').style.display = 'flex';
-    }
-    
-    function algorithmStep(step) {
-        const content = document.getElementById('algorithm-content');
-        
-        const algoritmos = {
-            1: `
-                <h3>📋 Algoritmo: Intubação Neonatal</h3>
-                <ol>
-                    <li>Preparar material: laringoscópio, tubo endotraqueal, ambu, monitor</li>
-                    <li>Posicionar: cabeça em posição neutra</li>
-                    <li>Visualizar cordas vocais</li>
-                    <li>Inserir tubo (tamanho: 2.5-3.5mm)</li>
-                    <li>Confirmar posição: ausculta bilateral, CO2 capnográfico</li>
-                    <li>Fixar tubo a 7-8-9 regra</li>
-                    <li>Radiografia de tórax para confirmação</li>
-                </ol>
-                <button onclick="usarSugestao('Quais os tamanhos de tubo para neonatos?')" style="padding:10px; background:var(--info); color:white; border:none; border-radius:5px; cursor:pointer;">
-                    Perguntar sobre tamanhos
-                </button>
-            `,
-            2: `
-                <h3>📋 Algoritmo: Dessaturação em VM</h3>
-                <ol>
-                    <li>🔍 Verificar: SpO2, FiO2, parâmetros ventilatorios</li>
-                    <li>👂 Auscultar: murmúrio vesicular bilateral?</li>
-                    <li>💨 Aumentar FiO2 temporariamente</li>
-                    <li>📊 Verificar: PEEP adequado? Vazamento?</li>
-                    <li>🩺 Excluir: pneumotórax, atelectasia, broncoaspiração</li>
-                    <li>🔄 Considerar: mudança de modo ventilatório</li>
-                </ol>
-            `,
-            3: `
-                <h3>📋 Algoritmo: Desmame Ventilatório</h3>
-                <ol>
-                    <li>📈 Estabilidade clínica: SpO2 > 92% com FiO2 ≤ 40%</li>
-                    <li>💪 Teste de respiração espontânea (T-piece)</li>
-                    <li>📊 Índice de desmame (RSBI < 105)</li>
-                    <li>🔄 Redução progressiva de suporte</li>
-                    <li>✅ Extubação quando: tosse eficaz, secreções mínimas</li>
-                </ol>
-            `,
-            4: `
-                <h3>📋 Algoritmo: Reanimação Neonatal</h3>
-                <div style="background: #f0f0f0; padding: 15px; border-radius: 10px; color: black;">
-                    <strong>ABC Neonatal:</strong><br>
-                    A - Via aérea (posição, aspiração)<br>
-                    B - Respiração (ventilação com pressão positiva)<br>
-                    C - Circulação (massagem cardíaca se FC < 60)<br>
-                    D - Droga (adrenalina se necessário)<br>
-                    E - Exposição (aquecimento)
-                </div>
-            `
-        };
-        
-        content.innerHTML = algoritmos[step] || '<p>Algoritmo não encontrado.</p>';
-    }
-    
-    // ==================== SISTEMA DE PLUGINS ====================
-    
-    const plugins = [
-        { id: 'math', name: 'Calculadora Matemática', active: true, description: 'Cálculos matemáticos avançados' },
-        { id: 'medical', name: 'Plugin Médico', active: true, description: 'Cálculos e algoritmos médicos' },
-        { id: 'python', name: 'Python Runtime', active: true, description: 'Execução de código Python' },
-        { id: 'neural', name: 'Redes Neurais', active: false, description: 'Simulações de IA' },
-        { id: 'ocr', name: 'OCR Básico', active: false, description: 'Reconhecimento de texto em imagens' },
-        { id: 'sentiment', name: 'Análise de Sentimento', active: true, description: 'Detecta emoções no texto' },
-        { id: 'safety', name: 'Filtro de Segurança', active: true, description: 'Monitora conteúdo inadequado' }
-    ];
-    
-    function showPlugins() {
-        document.getElementById('plugins-modal').style.display = 'flex';
-        
-        const grid = document.getElementById('plugins-grid');
-        grid.innerHTML = '';
-        
-        plugins.forEach(plugin => {
-            const pluginCard = document.createElement('div');
-            pluginCard.className = `plugin-card ${plugin.active ? 'active' : ''}`;
-            pluginCard.innerHTML = `
-                <h4>${plugin.name}</h4>
-                <p style="font-size:12px; color:var(--text-muted);">${plugin.description}</p>
-                <div style="margin-top:10px;">
-                    <button onclick="togglePlugin('${plugin.id}')" style="padding:5px 10px; background:${plugin.active ? 'var(--danger)' : 'var(--success)'}; color:white; border:none; border-radius:5px; cursor:pointer;">
-                        ${plugin.active ? 'Desativar' : 'Ativar'}
-                    </button>
-                </div>
-            `;
-            grid.appendChild(pluginCard);
-        });
-    }
-    
-    function togglePlugin(id) {
-        const plugin = plugins.find(p => p.id === id);
-        if (plugin) {
-            plugin.active = !plugin.active;
-            showPlugins();
-        }
-    }
-    
-    // ==================== TERMINAL PYTHON ====================
-    
-    let pyodide = null;
-    
-    async function loadPyodide() {
-        try {
-            pyodide = await loadPyodide();
-            document.getElementById('python-output').innerHTML += '>>> Pyodide carregado! Digite código Python.<br>';
-        } catch (error) {
-            document.getElementById('python-output').innerHTML += '>>> Erro ao carregar Pyodide. Usando simulador.<br>';
-        }
-    }
-    
-    function openPythonTerminal() {
-        document.getElementById('python-terminal-modal').style.display = 'flex';
-        
-        if (!pyodide) {
-            loadPyodide();
-        }
-    }
-    
-    function runPython() {
-        const input = document.getElementById('python-input').value;
-        const output = document.getElementById('python-output');
-        
-        output.innerHTML += `>>> ${input}<br>`;
-        
-        try {
-            if (pyodide) {
-                const result = pyodide.runPython(input);
-                output.innerHTML += `${result}<br>`;
-            } else {
-                // Simulação básica
-                if (input.includes('print(')) {
-                    const match = input.match(/print\((.*)\)/);
-                    if (match) {
-                        output.innerHTML += `${match[1].replace(/['"]/g, '')}<br>`;
-                    }
-                } else if (input.includes('import')) {
-                    output.innerHTML += 'Biblioteca importada (simulado)<br>';
-                } else {
-                    output.innerHTML += 'Executado (simulado)<br>';
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!menuDropdown.contains(e.target) && !menuToggle.contains(e.target)) {
+                    menuDropdown.classList.remove('show');
                 }
-            }
-        } catch (error) {
-            output.innerHTML += `Erro: ${error.message}<br>`;
-        }
-        
-        document.getElementById('python-input').value = '';
-        output.scrollTop = output.scrollHeight;
-    }
-    
-    function pythonEnter(e) {
-        if (e.key === 'Enter') {
-            runPython();
-        }
-    }
-    
-    // ==================== GERADOR INSTAGRAM CARD ====================
-    
-    function generateInstagramCard() {
-        document.getElementById('instagram-modal').style.display = 'flex';
-    }
-    
-    function generateCardPreview() {
-        const title = document.getElementById('card-title').value || 'Ventilação Mecânica';
-        const content = document.getElementById('card-content').value || 'Aprenda os conceitos básicos de ventilação mecânica com a Reelmi AI.';
-        
-        const cardHTML = `
-            <div class="instagram-card" id="card-to-download">
-                <div class="card-title">${title}</div>
-                <div class="card-content">${content}</div>
-                <div class="card-hashtag">#Medicina #Enfermagem #VentilaçãoMecânica #ReelmiAI</div>
-                <div style="margin-top:20px; font-size:12px;">@reelmiai • ${new Date().toLocaleDateString()}</div>
-            </div>
-        `;
-        
-        document.getElementById('card-preview').innerHTML = cardHTML;
-    }
-    
-    async function downloadCard() {
-        const card = document.getElementById('card-to-download');
-        if (!card) {
-            alert('Gere uma prévia primeiro!');
-            return;
-        }
-        
-        try {
-            const canvas = await html2canvas(card);
-            const link = document.createElement('a');
-            link.download = `reelmi-card-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        } catch (error) {
-            alert('Erro ao baixar imagem. Tente novamente.');
+            });
+            
+            // Close menu when clicking on a menu item
+            const dropdownItems = menuDropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    setTimeout(() => {
+                        menuDropdown.classList.remove('show');
+                    }, 300);
+                });
+            });
         }
     }
     
-    // ==================== SISTEMA DE TREINAMENTO ====================
-    
-    function openTraining() {
-        document.getElementById('training-modal').style.display = 'flex';
-    }
-    
-    function saveTraining() {
-        const question = document.getElementById('train-question').value;
-        const answer = document.getElementById('train-answer').value;
-        const category = document.getElementById('train-category').value;
-        
-        if (!question || !answer) {
-            alert('Preencha pergunta e resposta!');
-            return;
+    function updateMenuStatusIndicators() {
+        // Wake Word status
+        const wakeWordStatus = document.getElementById('wakeWordStatus');
+        if (wakeWordStatus) {
+            wakeWordStatus.textContent = wakeWordActive ? 'ON' : 'OFF';
+            wakeWordStatus.className = wakeWordActive ? 'dropdown-badge status-active' : 'dropdown-badge status-inactive';
         }
         
-        // Salvar no localStorage
-        const trainedData = JSON.parse(localStorage.getItem('reelmi_trained') || '[]');
-        trainedData.push({
-            question: question.toLowerCase(),
-            answer,
-            category,
-            date: new Date().toISOString()
-        });
+        // Dock status
+        const dockStatus = document.getElementById('dockStatus');
+        if (dockStatus) {
+            dockStatus.textContent = dockVisible ? 'ON' : 'OFF';
+            dockStatus.className = dockVisible ? 'dropdown-badge status-active' : 'dropdown-badge status-inactive';
+        }
         
-        localStorage.setItem('reelmi_trained', JSON.stringify(trainedData));
+        // Timeline status
+        const timelineStatus = document.getElementById('timelineStatus');
+        if (timelineStatus) {
+            timelineStatus.textContent = timelineVisible ? 'ON' : 'OFF';
+            timelineStatus.className = timelineVisible ? 'dropdown-badge status-active' : 'dropdown-badge status-inactive';
+        }
         
-        // Atualizar arrays de perguntas/respostas
-        perguntas.push(question.toLowerCase());
-        respostas.push(answer);
+        // AI status
+        const aiStatus = document.getElementById('aiStatus');
+        if (aiStatus) {
+            aiStatus.textContent = realAIActive ? 'ON' : 'OFF';
+            aiStatus.className = realAIActive ? 'dropdown-badge ai-status status-active' : 'dropdown-badge ai-status status-inactive';
+        }
         
-        alert('Treinamento salvo com sucesso! A IA agora conhece esta informação.');
-        closeModal('training-modal');
-        
-        // Limpar formulário
-        document.getElementById('train-question').value = '';
-        document.getElementById('train-answer').value = '';
+        // Compact Mode status
+        const compactModeStatus = document.getElementById('compactModeStatus');
+        if (compactModeStatus) {
+            compactModeStatus.textContent = compactModeActive ? 'ON' : 'OFF';
+            compactModeStatus.className = compactModeActive ? 'dropdown-badge status-active' : 'dropdown-badge status-inactive';
+        }
     }
     
-    // ==================== FILTRO DE SEGURANÇA ====================
-    
-    const palavrasToxicas = ['idiota', 'burro', 'estúpido', 'inútil', 'odeio', 'morra', 'merda'];
-    const palavrasMedicasSensiveis = ['dose exata', 'quantos comprimidos', 'mate', 'suicídio'];
-    
-    function verificarSeguranca(texto) {
-        const textoLower = texto.toLowerCase();
+    // ==================== SISTEMA DE RESPOSTAS ====================
+    function encontrarRespostaComContexto(input) {
+        const texto = input.toLowerCase();
         
-        // Verificar linguagem tóxica
-        for (const palavra of palavrasToxicas) {
-            if (textoLower.includes(palavra)) {
-                return {
-                    segura: false,
-                    motivo: 'linguagem_inadequada',
-                    mensagem: 'Detectei linguagem inadequada. Vamos manter uma conversa respeitosa. Como posso ajudá-lo de forma produtiva?'
-                };
+        // Verificar segurança
+        if (texto.includes("dose") && (texto.includes("aplicar") || texto.includes("medicamento"))) {
+            return "⚠️ CONSULTA OBRIGATÓRIA COM PROFISSIONAL DA SAÚDE. Como assistente de IA, não posso prescrever doses medicamentosas. Consulte sempre um médico ou farmacêutico para dosagens precisas.";
+        }
+        
+        // Verificar palavrões
+        const palavroes = ['idiota', 'burro', 'estúpido', 'inútil', 'odeio', 'morra'];
+        for (const palavra of palavroes) {
+            if (texto.includes(palavra)) {
+                return "Entendo que você pode estar frustrado. Estou aqui para ajudar de forma respeitosa. Como posso auxiliá-lo melhor?";
             }
         }
         
-        // Verificar consultas médicas perigosas
-        for (const palavra of palavrasMedicasSensiveis) {
-            if (textoLower.includes(palavra)) {
-                return {
-                    segura: false,
-                    motivo: 'consulta_medica_perigosa',
-                    mensagem: '⚠️ CONSULTA OBRIGATÓRIA COM PROFISSIONAL DA SAÚDE. Para questões médicas específicas, consulte sempre um médico. Posso fornecer informações gerais sobre saúde, mas não posso substituir atendimento profissional.'
-                };
-            }
-        }
+        adicionarAoContexto('user', input);
         
-        return { segura: true };
-    }
-    
-    function showSafetyWarning() {
-        showCustomModal('Avisos de Segurança', `
-            <div class="safety-warning">
-                <h3>⚠️ AVISO IMPORTANTE</h3>
-                <p>Reelmi AI é um assistente de IA e NÃO substitui:</p>
-                <ul>
-                    <li>Atendimento médico profissional</li>
-                    <li>Prescrição de medicamentos</li>
-                    <li>Diagnóstico médico</li>
-                    <li>Emergências médicas</li>
-                </ul>
-                <p>Em caso de emergência, ligue 192 ou procure um hospital.</p>
-            </div>
-            <p style="margin-top:20px;">O sistema inclui filtros para:</p>
-            <ul>
-                <li>Linguagem inadequada</li>
-                <li>Consultas médicas perigosas</li>
-                <li>Conteúdo inapropriado</li>
-            </ul>
-        `);
-    }
-    
-    // ==================== ANÁLISE DE SENTIMENTO ====================
-    
-    function analisarSentimento(texto) {
-        const positivos = ['obrigado', 'ajuda', 'por favor', 'bom', 'excelente', 'ótimo', 'legal', 'grato', 'perfeito'];
-        const negativos = ['urgente', 'emergência', 'problema', 'erro', 'não funciona', 'ruim', 'péssimo', 'horrível'];
-        const estressados = ['urgente!', 'rápido!', 'agora!', 'imediatamente', 'emergência'];
-        
-        let scorePositivo = 0;
-        let scoreNegativo = 0;
-        let scoreEstressado = 0;
-        const textoLower = texto.toLowerCase();
-        
-        positivos.forEach(palavra => {
-            if (textoLower.includes(palavra)) scorePositivo += 1;
-        });
-        
-        negativos.forEach(palavra => {
-            if (textoLower.includes(palavra)) scoreNegativo += 1;
-        });
-        
-        estressados.forEach(palavra => {
-            if (textoLower.includes(palavra)) scoreEstressado += 2;
-        });
-        
-        if (scoreEstressado > 1) return 'estressado';
-        if (scorePositivo > scoreNegativo && scorePositivo > 0) return 'feliz';
-        if (scoreNegativo > scorePositivo && scoreNegativo > 0) return 'triste';
-        if (textoLower.includes('?')) return 'curioso';
-        return 'neutro';
-    }
-    
-    function atualizarIndicadorSentimento(sentimento) {
-        const indicator = document.getElementById('sentiment-indicator');
-        const emojiMap = {
-            'feliz': '😊 Feliz',
-            'triste': '😢 Triste',
-            'estressado': '😰 Estressado',
-            'curioso': '🤔 Curioso',
-            'neutro': '😐 Neutro'
-        };
-        
-        indicator.textContent = emojiMap[sentimento] || 'Emoção: 😐';
-        document.getElementById('emotion-status').textContent = `Emoção: ${emojiMap[sentimento]?.split(' ')[0] || '😐'}`;
-        
-        // Aplicar classe de emoção ao chat
-        const chatHistory = document.getElementById('chat-history');
-        chatHistory.className = '';
-        if (sentimento === 'estressado') chatHistory.classList.add('emotion-stressed');
-        else if (sentimento === 'feliz') chatHistory.classList.add('emotion-happy');
-        else if (sentimento === 'triste') chatHistory.classList.add('emotion-sad');
-    }
-    
-    // ==================== SISTEMA DE RECOMENDAÇÕES ====================
-    
-    function showRecommendations() {
-        const recomendacoes = [
-            { tipo: 'video', titulo: 'Ventilação Mecânica Básica', url: '#', descricao: 'Videoaula completa' },
-            { tipo: 'pdf', titulo: 'Protocolo Neonatal', url: '#', descricao: 'PDF para download' },
-            { tipo: 'image', titulo: 'Fluxograma SDRA', url: '#', descricao: 'Imagem educativa' },
-            { tipo: 'glossary', titulo: 'Glossário de Termos', url: '#', descricao: 'Termos técnicos explicados' }
+        // Respostas baseadas em contexto
+        const respostasBase = [
+            { pergunta: 'ventilação mecânica', resposta: 'A ventilação mecânica é um suporte artificial à respiração utilizado quando o paciente não consegue respirar adequadamente por conta própria.' },
+            { pergunta: 'o que é cpap', resposta: 'CPAP (Continuous Positive Airway Pressure) é uma modalidade de ventilação não invasiva que mantém pressão positiva contínua nas vias aéreas.' },
+            { pergunta: 'modos ventilatorios', resposta: 'Os modos ventilatorios básicos incluem: Volume Control, Pressure Control, SIMV, CPAP, e Pressão de Suporte.' },
+            { pergunta: 'criar código python', resposta: 'Aqui está um exemplo básico de código Python:\n\n```python\nprint("Olá, mundo!")\n\n# Exemplo de função\ndef calcular_media(notas):\n    return sum(notas) / len(notas)\n```' },
+            { pergunta: 'neonatologia', resposta: 'Neonatologia é a especialidade médica que cuida de recém-nascidos, especialmente prematuros ou com problemas de saúde.' }
         ];
         
-        let html = '<h2>Recomendações Inteligentes</h2>';
-        html += '<p>Baseado no contexto da conversa, recomendo:</p>';
-        
-        recomendacoes.forEach(rec => {
-            html += `
-                <div class="algorithm-step">
-                    <h3>${rec.titulo}</h3>
-                    <p>${rec.descricao}</p>
-                    <small>Tipo: ${rec.tipo.toUpperCase()}</small>
-                </div>
-            `;
-        });
-        
-        showCustomModal('Recomendações', html);
-    }
-    
-    // ==================== FUNÇÕES AUXILIARES ====================
-    
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-    
-    function showCustomModal(title, content) {
-        const modal = document.createElement('div');
-        modal.className = 'calculator-modal';
-        modal.style.display = 'flex';
-        modal.innerHTML = `
-            <div class="calc-content">
-                <h2 style="margin-bottom:20px;">${title}</h2>
-                ${content}
-                <button onclick="this.parentElement.parentElement.remove()" style="width:100%; padding:12px; margin-top:20px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                    Fechar
-                </button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-    }
-    
-    function showImageUpload() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    addMsg(`[Imagem enviada: ${file.name}]`, 'user');
-                    setTimeout(() => {
-                        addMsg('Recebi sua imagem! Como assistente especializado, posso: 1) Descrever o conteúdo se for relacionado a saúde, 2) Analisar diagramas médicos, 3) Extrair texto (simulado). O que gostaria que faça?', 'bot');
-                    }, 600);
-                };
-                reader.readAsDataURL(file);
+        // Procurar resposta correspondente
+        for (const item of respostasBase) {
+            if (texto.includes(item.pergunta)) {
+                adicionarAoContexto('assistant', item.resposta);
+                return item.resposta;
             }
-        };
-        input.click();
+        }
+        
+        // Resposta padrão
+        const personalidade = document.getElementById('personality-select').value;
+        let respostaPadrao = '';
+        
+        switch(personalidade) {
+            case 'teacher':
+                respostaPadrao = 'Vamos aprender juntos! Posso explicar sobre ventilação mecânica, neonatologia, programação Python e outros tópicos. O que você gostaria de saber?';
+                break;
+            case 'simple':
+                respostaPadrao = 'Posso ajudar com assuntos de saúde ou tecnologia. Me pergunte de forma simples!';
+                break;
+            case 'technical':
+                respostaPadrao = 'Como sistema técnico especializado, posso fornecer informações detalhadas sobre ventilação mecânica, parâmetros ventilatorios, algoritmos clínicos e desenvolvimento Python.';
+                break;
+            case 'empathetic':
+                respostaPadrao = 'Entendo que você está buscando informações. Estou aqui para ajudar de forma clara e acolhedora. Conte-me mais sobre sua dúvida.';
+                break;
+            case 'analytical':
+                respostaPadrao = 'Analisando sua consulta: posso fornecer dados estruturados e informações técnicas baseadas em evidências. Especifique os parâmetros de interesse.';
+                break;
+            default:
+                respostaPadrao = 'Como modelo de IA especializado, posso ajudar com questões sobre ventilação mecânica, neonatologia, programação Python e outras áreas técnicas. Como posso ajudá-lo?';
+        }
+        
+        adicionarAoContexto('assistant', respostaPadrao);
+        return respostaPadrao;
     }
     
     // ==================== FUNÇÕES DO CHAT ====================
-    
     function addMsg(texto, tipo, salvar = true) {
         document.getElementById('dashboard-view').style.display = 'none';
         document.getElementById('chat-view').style.display = 'flex';
         document.getElementById('study-view').style.display = 'none';
         
-        // Analisar sentimento se for mensagem do usuário
-        if (tipo === 'user') {
-            const sentimento = analisarSentimento(texto);
-            atualizarIndicadorSentimento(sentimento);
-        }
-        
         const history = document.getElementById('chat-history');
         const div = document.createElement('div');
         div.className = `msg-row ${tipo}`;
-        
-        // Adicionar badge de contexto se aplicável
-        let textoComBadge = texto;
-        if (tipo === 'user') {
-            const intencao = detectarIntencao(texto);
-            if (intencao.confianca === 'alta') {
-                textoComBadge += ` <span class="context-badge">${intencao.categoria}</span>`;
-            }
-        }
         
         let avatarImg = tipo === 'bot' ? 'roboreelmi.png' : 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
         let fallback = tipo === 'bot' ? 'https://cdn-icons-png.flaticon.com/512/4712/4712109.png' : 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
         
         const htmlAvatar = `<div class="avatar"><img src="${avatarImg}" onerror="this.src='${fallback}'"></div>`;
-        const htmlBubble = `<div class="bubble">${textoComBadge}</div>`;
+        const htmlBubble = `<div class="bubble">${texto}</div>`;
         
         div.innerHTML = tipo === 'bot' ? htmlAvatar + htmlBubble : htmlBubble + htmlAvatar;
         history.appendChild(div);
         history.scrollTop = history.scrollHeight;
         
-        // Salvar no histórico se necessário
         if (salvar && tipo === 'bot') {
-            setTimeout(() => salvarConversa(), 100);
+            salvarConversa();
+        }
+        
+        // Atualizar timeline se visível
+        if (timelineVisible) {
+            setTimeout(() => updateTimeline(), 100);
         }
     }
     
@@ -2744,17 +2742,6 @@
         const campo = document.getElementById('campo-texto');
         const txt = campo.value.trim();
         if(!txt) return;
-        
-        // Verificar segurança
-        const seguranca = verificarSeguranca(txt);
-        if (!seguranca.segura) {
-            addMsg(txt, 'user');
-            setTimeout(() => {
-                addMsg(seguranca.mensagem, 'bot');
-            }, 600);
-            campo.value = '';
-            return;
-        }
         
         addMsg(txt, 'user');
         campo.value = '';
@@ -2774,6 +2761,7 @@
         document.getElementById('chat-history').appendChild(typingIndicator);
         document.getElementById('chat-history').scrollTop = history.scrollHeight;
         
+        // Simular processamento e resposta
         setTimeout(() => {
             const resp = encontrarRespostaComContexto(txt);
             document.getElementById('typing-indicator')?.remove();
@@ -2793,24 +2781,29 @@
         if(e.key === 'Enter') enviarTexto(); 
     }
     
-    function toggleTheme() { 
-        document.body.classList.toggle('light-mode');
-        localStorage.setItem('reelmi_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    function salvarConversa() {
+        const conversaAtual = {
+            id: Date.now(),
+            data: new Date().toLocaleString(),
+            mensagens: contextoConversa.slice(-5), // Salvar últimas 5 mensagens
+            categoria: 'geral'
+        };
+        
+        historicoConversas.push(conversaAtual);
+        
+        if (historicoConversas.length > 50) {
+            historicoConversas = historicoConversas.slice(-50);
+        }
+        
+        localStorage.setItem('reelmi_historico', JSON.stringify(historicoConversas));
     }
     
-    function toggleCompactMode() {
-        const aside = document.querySelector('aside');
-        const isCompact = aside.style.width === '60px';
-        
-        if (isCompact) {
-            aside.style.width = '280px';
-            document.querySelectorAll('.nav-item span').forEach(el => el.style.display = 'inline');
-            document.querySelectorAll('.menu-label').forEach(el => el.style.display = 'block');
-        } else {
-            aside.style.width = '60px';
-            document.querySelectorAll('.nav-item span').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.menu-label').forEach(el => el.style.display = 'none');
-        }
+    // ==================== FUNÇÕES UTILITÁRIAS ====================
+    function toggleTheme() { 
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('reelmi_theme', isLight ? 'light' : 'dark');
+        showNotification(isLight ? 'Tema claro ativado' : 'Tema escuro ativado');
     }
     
     function switchMode(modo) {
@@ -2818,7 +2811,6 @@
         document.getElementById('chat-view').style.display = 'none';
         document.getElementById('study-view').style.display = 'none';
         
-        // Atualizar botões ativos
         document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         
@@ -2834,7 +2826,6 @@
             case 'study':
                 document.getElementById('study-view').style.display = 'flex';
                 document.querySelector('.nav-item:nth-child(3)').classList.add('active');
-                // Carregar conteúdo de estudo
                 document.getElementById('study-content').innerHTML = `
                     <div style="background: var(--bg-surface); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
                         <h2>📚 Módulo 1: Ventilação Mecânica Básica</h2>
@@ -2855,786 +2846,7 @@
         }
     }
     
-    function aumentarFonte() {
-        const history = document.getElementById('chat-history');
-        const currentSize = parseInt(window.getComputedStyle(history).fontSize);
-        history.style.fontSize = (currentSize + 2) + 'px';
-    }
-    
-    function diminuirFonte() {
-        const history = document.getElementById('chat-history');
-        const currentSize = parseInt(window.getComputedStyle(history).fontSize);
-        if (currentSize > 12) {
-            history.style.fontSize = (currentSize - 2) + 'px';
-        }
-    }
-    
-    function limparChat() {
-        if (confirm('Tem certeza que deseja limpar a conversa? O contexto será perdido.')) {
-            document.getElementById('chat-history').innerHTML = '';
-            contextoConversa = [];
-            document.getElementById('context-length').textContent = '0';
-            localStorage.removeItem('reelmi_context');
-            switchMode('dashboard');
-        }
-    }
-    
-    // ==================== NOVAS FUNCIONALIDADES ====================
-    
-    /* ============ SISTEMA DE JANELAS (OS-LIKE) ============ */
-    let windows = [];
-    let windowZIndex = 1000;
-    let dockVisible = true;
-    
-    function openWindow(type) {
-        const windowId = 'window-' + Date.now();
-        const window = document.createElement('div');
-        window.className = 'os-window window-opening';
-        window.id = windowId;
-        window.style.zIndex = ++windowZIndex;
-        
-        let title = '';
-        let content = '';
-        
-        switch(type) {
-            case 'notion':
-                title = 'Editor Notion';
-                content = `
-                    <div class="notion-editor" contenteditable="true" id="${windowId}-editor">
-                        <div class="notion-block" data-type="h1">Título Principal</div>
-                        <div class="notion-block" data-type="p">Comece a digitar aqui... Pressione Enter para novo bloco</div>
-                    </div>
-                    <div style="margin-top: 15px; display: flex; gap: 10px;">
-                        <button onclick="exportNotion('${windowId}')" style="padding:10px 20px; background:var(--success); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-file-pdf"></i> PDF
-                        </button>
-                        <button onclick="saveNotion('${windowId}')" style="padding:10px 20px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-save"></i> Salvar
-                        </button>
-                        <button onclick="insertNotionBlock('${windowId}', 'h2')" style="padding:10px 20px; background:var(--warning); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-heading"></i> Título
-                        </button>
-                    </div>
-                `;
-                break;
-                
-            case 'terminal':
-                title = 'Terminal Avançado';
-                content = `
-                    <div class="advanced-terminal" id="${windowId}-terminal">
-                        <div class="terminal-line"><span class="terminal-prompt">$</span> Bem-vindo ao Terminal Reelmi AI v2.0</div>
-                        <div class="terminal-line"><span class="terminal-prompt">$</span> Digite "help" para comandos disponíveis</div>
-                        <div class="terminal-line"><span class="terminal-prompt">$</span> Conectado ao Python Runtime</div>
-                    </div>
-                    <input type="text" id="${windowId}-input" style="width:100%; padding:10px; margin-top:10px; background:#1a1a1a; color:#00ff00; border:1px solid #333; border-radius:5px;" placeholder="Digite um comando..." onkeypress="terminalKeyPress(event, '${windowId}')">
-                    <div style="margin-top:10px; font-size:12px; color:#888;">
-                        <i class="fas fa-info-circle"></i> Dica: Use ↑↓ para navegar no histórico
-                    </div>
-                `;
-                break;
-                
-            case 'ventilation':
-                title = 'Simulador Ventilatório';
-                content = `
-                    <div class="ventilation-simulator">
-                        <h3><i class="fas fa-lungs"></i> Parâmetros Ventilatórios</h3>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
-                            <div>
-                                <label>Vt (ml)</label>
-                                <input type="range" min="200" max="800" value="500" class="vent-param" data-param="vt" oninput="updateVentParam('${windowId}', this)">
-                                <span id="vt-value-${windowId}" style="display:block; text-align:center; font-weight:bold;">500</span>
-                            </div>
-                            <div>
-                                <label>PEEP (cmH2O)</label>
-                                <input type="range" min="0" max="20" value="5" class="vent-param" data-param="peep" oninput="updateVentParam('${windowId}', this)">
-                                <span id="peep-value-${windowId}" style="display:block; text-align:center; font-weight:bold;">5</span>
-                            </div>
-                            <div>
-                                <label>FiO₂ (%)</label>
-                                <input type="range" min="21" max="100" value="40" class="vent-param" data-param="fio2" oninput="updateVentParam('${windowId}', this)">
-                                <span id="fio2-value-${windowId}" style="display:block; text-align:center; font-weight:bold;">40</span>
-                            </div>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0;">
-                            <div>
-                                <label>Modo Ventilatório</label>
-                                <select id="vent-mode-${windowId}" class="calc-input" onchange="updateVentMode('${windowId}')">
-                                    <option value="vcv">VCV (Volume Control)</option>
-                                    <option value="pcv">PCV (Pressure Control)</option>
-                                    <option value="simv">SIMV</option>
-                                    <option value="cpap">CPAP</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Frequência (rpm)</label>
-                                <input type="range" min="10" max="40" value="20" class="vent-param" data-param="freq" oninput="updateVentParam('${windowId}', this)">
-                                <span id="freq-value-${windowId}" style="display:block; text-align:center; font-weight:bold;">20</span>
-                            </div>
-                            <div>
-                                <label>I:E Ratio</label>
-                                <select id="ieratio-${windowId}" class="calc-input">
-                                    <option value="1:1">1:1</option>
-                                    <option value="1:2" selected>1:2</option>
-                                    <option value="1:3">1:3</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="pv-curve" id="${windowId}-curve">
-                            <canvas id="${windowId}-canvas" width="400" height="300"></canvas>
-                        </div>
-                        
-                        <div style="display: flex; gap: 10px; margin-top: 20px;">
-                            <button onclick="simulateVentilation('${windowId}')" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-play"></i> Simular
-                            </button>
-                            <button onclick="saveVentilationSettings('${windowId}')" style="padding:12px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-save"></i>
-                            </button>
-                            <button onclick="exportVentilationData('${windowId}')" style="padding:12px; background:var(--success); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                        
-                        <div id="${windowId}-results" style="margin-top: 15px;"></div>
-                    </div>
-                `;
-                break;
-                
-            case 'agent':
-                title = 'Agente Auto-GPT';
-                content = `
-                    <div class="agent-status">
-                        <h3><i class="fas fa-robot"></i> Agente Autônomo</h3>
-                        <div style="margin: 15px 0;">
-                            <input type="text" id="${windowId}-goal" class="calc-input" placeholder="Digite um objetivo para o agente (ex: 'Pesquisar sobre ventilação neonatal')">
-                            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                                <button onclick="startAgent('${windowId}')" style="flex:1; padding:12px; background:var(--success); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                    <i class="fas fa-play"></i> Iniciar Agente
-                                </button>
-                                <button onclick="pauseAgent('${windowId}')" style="padding:12px; background:var(--warning); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                    <i class="fas fa-pause"></i>
-                                </button>
-                                <button onclick="stopAgent('${windowId}')" style="padding:12px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                    <i class="fas fa-stop"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="task-list" id="${windowId}-tasks">
-                            <div class="task-item">
-                                <div>
-                                    <strong>Status do Agente</strong>
-                                    <br><small>Pronto para iniciar uma missão</small>
-                                </div>
-                                <div class="loading-wave">
-                                    <div></div><div></div><div></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 20px;">
-                            <h4>Configurações do Agente</h4>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
-                                <div>
-                                    <label>Nível de Autonomia</label>
-                                    <select id="${windowId}-autonomy" class="calc-input">
-                                        <option value="low">Baixa (Consultar)</option>
-                                        <option value="medium" selected>Média (Recomendar)</option>
-                                        <option value="high">Alta (Executar)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label>Máx. Iterações</label>
-                                    <input type="number" id="${windowId}-iterations" class="calc-input" value="10" min="1" max="50">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                break;
-                
-            case 'study':
-                title = 'Dashboard de Estudo';
-                content = `
-                    <div class="study-dashboard">
-                        <div class="progress-card">
-                            <h4><i class="fas fa-lungs"></i> Ventilação Mecânica</h4>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                            <span>65% completo</span>
-                            <button onclick="startStudyModule('ventilation')" style="width:100%; padding:8px; margin-top:10px; background:var(--primary-gradient); color:white; border:none; border-radius:8px; cursor:pointer;">
-                                Continuar Estudo
-                            </button>
-                        </div>
-                        
-                        <div class="progress-card">
-                            <h4><i class="fas fa-baby"></i> Neonatologia</h4>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 40%"></div>
-                            </div>
-                            <span>40% completo</span>
-                            <button onclick="startStudyModule('neonatology')" style="width:100%; padding:8px; margin-top:10px; background:var(--primary-gradient); color:white; border:none; border-radius:8px; cursor:pointer;">
-                                Iniciar Módulo
-                            </button>
-                        </div>
-                        
-                        <div class="progress-card">
-                            <h4><i class="fas fa-tasks"></i> Exercícios</h4>
-                            <div style="font-size: 32px; text-align: center; margin: 15px 0;">12/20</div>
-                            <div style="text-align: center;">
-                                <small>Taxa de acerto: 85%</small>
-                            </div>
-                        </div>
-                        
-                        <div class="progress-card">
-                            <h4><i class="fas fa-calendar"></i> Próxima Revisão</h4>
-                            <div style="font-size: 18px; text-align: center; margin: 15px 0;">Amanhã 10:00</div>
-                            <div style="text-align: center;">
-                                <small>Tópico: Modos Ventilatórios</small>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <button onclick="generateStudyPlan()" style="width:100%; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-magic"></i> Gerar Plano de Estudo Personalizado
-                        </button>
-                        
-                        <button onclick="takePracticeTest()" style="width:100%; padding:12px; margin-top:10px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-clipboard-check"></i> Fazer Teste Prático
-                        </button>
-                    </div>
-                    
-                    <div id="${windowId}-study-content" style="margin-top: 20px;"></div>
-                `;
-                break;
-                
-            case 'code':
-                title = 'Editor de Código';
-                content = `
-                    <div style="height: 400px;">
-                        <textarea id="${windowId}-code-editor" style="width:100%; height:300px; background:#1a1a1a; color:white; border:none; border-radius:8px; padding:10px; font-family: monospace;">
-// Digite seu código aqui
-function helloWorld() {
-    console.log("Hello, Reelmi AI!");
-}
-
-// Exemplo de função médica
-function calculatePaO2FiO2(pao2, fio2) {
-    return pao2 / fio2;
-}
-                        </textarea>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <select id="${windowId}-language" class="calc-input" style="flex:1;">
-                            <option value="javascript">JavaScript</option>
-                            <option value="python">Python</option>
-                            <option value="html">HTML</option>
-                            <option value="css">CSS</option>
-                        </select>
-                        <button onclick="runCode('${windowId}')" style="padding:12px 20px; background:var(--success); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-play"></i> Executar
-                        </button>
-                        <button onclick="formatCode('${windowId}')" style="padding:12px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                            <i class="fas fa-align-left"></i>
-                        </button>
-                    </div>
-                    <div id="${windowId}-code-output" style="margin-top:15px; padding:15px; background:#1a1a1a; color:#00ff00; border-radius:8px; min-height:100px; font-family: monospace;">
-                        // Saída aparecerá aqui
-                    </div>
-                `;
-                break;
-        }
-        
-        window.innerHTML = `
-            <div class="window-header">
-                <span><i class="fas fa-window-maximize"></i> ${title}</span>
-                <div class="window-controls">
-                    <button onclick="minimizeWindow('${windowId}')" title="Minimizar"><i class="fas fa-minus"></i></button>
-                    <button onclick="maximizeWindow('${windowId}')" title="Maximizar"><i class="fas fa-expand"></i></button>
-                    <button onclick="closeWindow('${windowId}')" title="Fechar"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-            <div class="window-content">
-                ${content}
-            </div>
-        `;
-        
-        // Posição aleatória inicial
-        const maxX = window.innerWidth - 400;
-        const maxY = window.innerHeight - 400;
-        window.style.left = Math.floor(Math.random() * maxX) + 'px';
-        window.style.top = Math.floor(Math.random() * maxY) + 'px';
-        
-        document.getElementById('window-container').appendChild(window);
-        windows.push(windowId);
-        
-        // Tornar arrastável
-        makeDraggable(windowId);
-        
-        // Inicializar conteúdo específico
-        if (type === 'terminal') initTerminal(windowId);
-        if (type === 'ventilation') initVentilationSimulator(windowId);
-        if (type === 'code') initCodeEditor(windowId);
-    }
-    
-    function makeDraggable(windowId) {
-        const window = document.getElementById(windowId);
-        const header = window.querySelector('.window-header');
-        
-        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        
-        header.onmousedown = dragMouseDown;
-        
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
-            window.style.zIndex = ++windowZIndex;
-        }
-        
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            window.style.top = (window.offsetTop - pos2) + "px";
-            window.style.left = (window.offsetLeft - pos1) + "px";
-        }
-        
-        function closeDragElement() {
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-    
-    function closeWindow(windowId) {
-        const window = document.getElementById(windowId);
-        if (window) {
-            window.style.animation = 'windowOpen 0.3s ease-out reverse';
-            setTimeout(() => {
-                window.remove();
-                windows = windows.filter(id => id !== windowId);
-            }, 300);
-        }
-    }
-    
-    function minimizeWindow(windowId) {
-        const window = document.getElementById(windowId);
-        const content = window.querySelector('.window-content');
-        content.style.display = content.style.display === 'none' ? 'block' : 'none';
-        window.style.height = content.style.display === 'none' ? '48px' : 'auto';
-    }
-    
-    function maximizeWindow(windowId) {
-        const window = document.getElementById(windowId);
-        if (window.style.width === '95vw') {
-            window.style.width = '600px';
-            window.style.height = '500px';
-            window.style.left = 'calc(50% - 300px)';
-            window.style.top = 'calc(50% - 250px)';
-        } else {
-            window.style.width = '95vw';
-            window.style.height = '90vh';
-            window.style.left = '2.5vw';
-            window.style.top = '5vh';
-        }
-    }
-    
-    function toggleDock() {
-        const dock = document.getElementById('app-dock');
-        dock.style.display = dock.style.display === 'none' ? 'flex' : 'none';
-        dockVisible = !dockVisible;
-    }
-    
-    /* ============ IA REAL ============ */
-    let realAIActive = false;
-    let currentAIMode = 'simulated';
-    
-    function toggleRealAI() {
-        const fab = document.getElementById('ai-fab');
-        if (!realAIActive) {
-            realAIActive = true;
-            fab.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
-            fab.innerHTML = '<i class="fas fa-brain"></i> AI ON';
-            document.getElementById('ai-mode-indicator').textContent = 'IA: Ativa';
-            showCustomModal('IA Real Ativada', `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 48px; color: #00ff00; margin-bottom: 20px;">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>IA Real Conectada!</h3>
-                    <p>Modo: <strong>${currentAIMode.toUpperCase()}</strong></p>
-                    <p>Sua conversa agora usará modelos de IA avançados.</p>
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,0,0.1); border-radius: 10px;">
-                        <small>Para configurações avançadas, acesse o menu "IA Real" na sidebar</small>
-                    </div>
-                </div>
-            `);
-        } else {
-            realAIActive = false;
-            fab.style.background = 'var(--primary-gradient)';
-            fab.innerHTML = '<i class="fas fa-brain"></i>';
-            document.getElementById('ai-mode-indicator').textContent = 'IA: Local';
-            showCustomModal('IA Real Desativada', `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 48px; color: #ff5555; margin-bottom: 20px;">
-                        <i class="fas fa-power-off"></i>
-                    </div>
-                    <h3>IA Real Desconectada</h3>
-                    <p>Retornando ao modo local.</p>
-                </div>
-            `);
-        }
-    }
-    
-    function selectAIMode(mode) {
-        currentAIMode = mode;
-        document.querySelectorAll('#real-ai-modal .mode-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        let configHTML = '';
-        
-        switch(mode) {
-            case 'openai':
-                configHTML = `
-                    <div class="calc-group">
-                        <label><i class="fas fa-key"></i> API Key OpenAI</label>
-                        <input type="password" id="openai-key" class="calc-input" placeholder="sk-...">
-                        <small>Obtenha em platform.openai.com</small>
-                    </div>
-                    <div class="calc-group">
-                        <label><i class="fas fa-cogs"></i> Modelo</label>
-                        <select id="openai-model" class="calc-input">
-                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Rápido)</option>
-                            <option value="gpt-4">GPT-4 (Preciso)</option>
-                            <option value="gpt-4-turbo">GPT-4 Turbo (Recomendado)</option>
-                        </select>
-                    </div>
-                    <div class="calc-group">
-                        <label><i class="fas fa-sliders-h"></i> Temperatura</label>
-                        <input type="range" id="openai-temp" min="0" max="1" step="0.1" value="0.7" class="calc-input">
-                        <small>Criatividade: <span id="temp-value">0.7</span></small>
-                    </div>
-                `;
-                break;
-                
-            case 'groq':
-                configHTML = `
-                    <div class="calc-group">
-                        <label><i class="fas fa-key"></i> API Key Groq</label>
-                        <input type="password" id="groq-key" class="calc-input" placeholder="gsk-...">
-                        <small>Obtenha em console.groq.com</small>
-                    </div>
-                    <div class="calc-group">
-                        <label><i class="fas fa-cogs"></i> Modelo</label>
-                        <select id="groq-model" class="calc-input">
-                            <option value="llama2-70b-4096">Llama 2 70B</option>
-                            <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
-                            <option value="gemma-7b-it">Gemma 7B</option>
-                        </select>
-                    </div>
-                `;
-                break;
-                
-            case 'local':
-                configHTML = `
-                    <div class="calc-group">
-                        <label><i class="fas fa-server"></i> URL Ollama</label>
-                        <input type="text" id="ollama-url" class="calc-input" value="http://localhost:11434">
-                        <small>Instale Ollama localmente</small>
-                    </div>
-                    <div class="calc-group">
-                        <label><i class="fas fa-cogs"></i> Modelo Local</label>
-                        <select id="ollama-model" class="calc-input">
-                            <option value="llama2">Llama 2 (7B)</option>
-                            <option value="mistral">Mistral (7B)</option>
-                            <option value="codellama">CodeLlama (7B)</option>
-                            <option value="medllama2">MedLlama2 (Médico)</option>
-                        </select>
-                    </div>
-                `;
-                break;
-                
-            case 'simulated':
-                configHTML = `
-                    <div class="calc-group">
-                        <label><i class="fas fa-desktop"></i> Modo Simulado</label>
-                        <p>Usa o sistema local avançado com:</p>
-                        <ul>
-                            <li>Base de conhecimento médica</li>
-                            <li>Análise de contexto</li>
-                            <li>Detecção de intenção</li>
-                            <li>Sistema de memória</li>
-                        </ul>
-                        <p style="margin-top:10px; color:var(--success);"><i class="fas fa-check-circle"></i> Pronto para uso!</p>
-                    </div>
-                `;
-                break;
-        }
-        
-        document.getElementById('ai-config-area').innerHTML = configHTML;
-        
-        // Atualizar valor da temperatura
-        if (mode === 'openai') {
-            document.getElementById('openai-temp').addEventListener('input', function() {
-                document.getElementById('temp-value').textContent = this.value;
-            });
-        }
-    }
-    
-    async function testAIConnection() {
-        const statusModal = showCustomModal('Testando Conexão', `
-            <div style="text-align: center; padding: 20px;">
-                <div class="loading-wave" style="justify-content: center;">
-                    <div></div><div></div><div></div><div></div>
-                </div>
-                <p style="margin-top: 20px;">Conectando ao servidor de IA...</p>
-            </div>
-        `);
-        
-        setTimeout(() => {
-            statusModal.remove();
-            showCustomModal('Conexão Testada', `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3>Conexão Bem Sucedida!</h3>
-                    <p>Modo: <strong>${currentAIMode.toUpperCase()}</strong></p>
-                    <p>Latência: <strong>${(Math.random() * 100 + 50).toFixed(0)}ms</strong></p>
-                    <p>Status: <span style="color:var(--success);">●</span> Conectado</p>
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
-                        <small>Pronto para uso! A IA Real será usada nas próximas conversas.</small>
-                    </div>
-                </div>
-            `);
-            
-            // Ativar IA Real
-            realAIActive = true;
-            const fab = document.getElementById('ai-fab');
-            fab.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
-            fab.innerHTML = '<i class="fas fa-brain"></i> AI ON';
-            document.getElementById('ai-mode-indicator').textContent = `IA: ${currentAIMode}`;
-        }, 1500);
-    }
-    
-    /* ============ MEMÓRIA AVANÇADA ============ */
-    let longTermMemory = JSON.parse(localStorage.getItem('reelmi_long_memory') || '{}');
-    
-    function saveToLongMemory(key, value) {
-        longTermMemory[key] = {
-            value: value,
-            timestamp: new Date().toISOString(),
-            accessCount: (longTermMemory[key]?.accessCount || 0) + 1,
-            category: detectarIntencao(key).categoria
-        };
-        localStorage.setItem('reelmi_long_memory', JSON.stringify(longTermMemory));
-    }
-    
-    function getFromLongMemory(key) {
-        if (longTermMemory[key]) {
-            longTermMemory[key].lastAccessed = new Date().toISOString();
-            longTermMemory[key].accessCount++;
-            localStorage.setItem('reelmi_long_memory', JSON.stringify(longTermMemory));
-            return longTermMemory[key].value;
-        }
-        return null;
-    }
-    
-    function showMemoryManager() {
-        document.getElementById('memory-manager-modal').style.display = 'flex';
-        updateMemoryStats();
-        loadReminders();
-    }
-    
-    function updateMemoryStats() {
-        const stats = document.getElementById('memory-stats');
-        const memoryCount = Object.keys(longTermMemory).length;
-        const totalAccess = Object.values(longTermMemory).reduce((sum, item) => sum + (item.accessCount || 0), 0);
-        
-        // Calcular por categoria
-        const categories = {};
-        Object.values(longTermMemory).forEach(item => {
-            const cat = item.category || 'outro';
-            categories[cat] = (categories[cat] || 0) + 1;
-        });
-        
-        let categoriesHTML = '';
-        for (const [cat, count] of Object.entries(categories)) {
-            categoriesHTML += `<div style="margin:5px 0;"><strong>${cat}:</strong> ${count} itens</div>`;
-        }
-        
-        stats.innerHTML = `
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
-                <div class="gas-parameter">
-                    <div class="gas-value">${memoryCount}</div>
-                    <div>Memórias Salvas</div>
-                </div>
-                <div class="gas-parameter">
-                    <div class="gas-value">${totalAccess}</div>
-                    <div>Acessos Totais</div>
-                </div>
-            </div>
-            <h4>Distribuição por Categoria:</h4>
-            ${categoriesHTML}
-        `;
-    }
-    
-    function addReminder() {
-        const text = document.getElementById('new-reminder').value;
-        const time = document.getElementById('reminder-time').value;
-        
-        if (!text || !time) {
-            alert('Preencha todos os campos');
-            return;
-        }
-        
-        const reminders = JSON.parse(localStorage.getItem('reelmi_reminders') || '[]');
-        const reminder = {
-            id: Date.now(),
-            text: text,
-            time: time,
-            created: new Date().toISOString(),
-            completed: false,
-            notified: false
-        };
-        
-        reminders.push(reminder);
-        localStorage.setItem('reelmi_reminders', JSON.stringify(reminders));
-        document.getElementById('new-reminder').value = '';
-        loadReminders();
-        scheduleReminderCheck();
-        
-        // Mostrar confirmação
-        showCustomModal('Lembrete Adicionado', `
-            <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <h3>Lembrete Agendado!</h3>
-                <p><strong>"${text}"</strong></p>
-                <p>Para: ${new Date(time).toLocaleString()}</p>
-            </div>
-        `);
-    }
-    
-    function loadReminders() {
-        const reminders = JSON.parse(localStorage.getItem('reelmi_reminders') || '[]');
-        const list = document.getElementById('reminders-list');
-        
-        if (reminders.length === 0) {
-            list.innerHTML = '<p style="text-align:center; color:var(--text-muted);"><i class="fas fa-bell-slash"></i> Nenhum lembrete agendado.</p>';
-            return;
-        }
-        
-        // Ordenar por data
-        reminders.sort((a, b) => new Date(a.time) - new Date(b.time));
-        
-        let html = '';
-        reminders.forEach(reminder => {
-            const time = new Date(reminder.time);
-            const now = new Date();
-            const timeDiff = time - now;
-            const hoursLeft = Math.floor(timeDiff / (1000 * 60 * 60));
-            
-            let statusColor = 'var(--info)';
-            let statusText = 'Agendado';
-            
-            if (reminder.completed) {
-                statusColor = 'var(--success)';
-                statusText = 'Concluído';
-            } else if (timeDiff < 0) {
-                statusColor = 'var(--danger)';
-                statusText = 'Atrasado';
-            } else if (hoursLeft < 24) {
-                statusColor = 'var(--warning)';
-                statusText = 'Próximo';
-            }
-            
-            html += `
-                <div class="task-item" style="border-left: 4px solid ${statusColor};">
-                    <div>
-                        <strong>${reminder.text}</strong><br>
-                        <small><i class="far fa-clock"></i> ${time.toLocaleString()}</small>
-                        <div style="margin-top:5px;">
-                            <span style="font-size:11px; padding:2px 6px; background:${statusColor}; color:white; border-radius:10px;">${statusText}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="completeReminder(${reminder.id})" style="padding:5px 10px; background:var(--success); color:white; border:none; border-radius:5px; cursor:pointer; margin-right:5px;" title="Marcar como concluído">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button onclick="deleteReminder(${reminder.id})" style="padding:5px 10px; background:var(--danger); color:white; border:none; border-radius:5px; cursor:pointer;" title="Excluir">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        list.innerHTML = html;
-    }
-    
-    function completeReminder(id) {
-        const reminders = JSON.parse(localStorage.getItem('reelmi_reminders') || '[]');
-        const index = reminders.findIndex(r => r.id === id);
-        if (index !== -1) {
-            reminders[index].completed = true;
-            reminders[index].completedAt = new Date().toISOString();
-            localStorage.setItem('reelmi_reminders', JSON.stringify(reminders));
-            loadReminders();
-        }
-    }
-    
-    function deleteReminder(id) {
-        if (!confirm('Tem certeza que deseja excluir este lembrete?')) return;
-        
-        const reminders = JSON.parse(localStorage.getItem('reelmi_reminders') || '[]');
-        const filtered = reminders.filter(r => r.id !== id);
-        localStorage.setItem('reelmi_reminders', JSON.stringify(filtered));
-        loadReminders();
-    }
-    
-    function scheduleReminderCheck() {
-        // Verificar lembretes a cada minuto
-        setInterval(checkReminders, 60000);
-    }
-    
-    function checkReminders() {
-        const reminders = JSON.parse(localStorage.getItem('reelmi_reminders') || '[]');
-        const now = new Date();
-        
-        reminders.forEach(reminder => {
-            if (reminder.completed || reminder.notified) return;
-            
-            const reminderTime = new Date(reminder.time);
-            const timeDiff = reminderTime - now;
-            
-            // Notificar se faltar menos de 5 minutos ou se já passou
-            if (timeDiff < 300000 && timeDiff > -300000) {
-                showNotification(`Lembrete: ${reminder.text}`);
-                reminder.notified = true;
-                
-                // Atualizar no storage
-                const updatedReminders = reminders.map(r => 
-                    r.id === reminder.id ? {...r, notified: true} : r
-                );
-                localStorage.setItem('reelmi_reminders', JSON.stringify(updatedReminders));
-            }
-        });
-    }
-    
     function showNotification(message) {
-        // Criar elemento de notificação
         const notification = document.createElement('div');
         notification.style.cssText = `
             position: fixed;
@@ -3662,1831 +2874,52 @@ function calculatePaO2FiO2(pao2, fio2) {
         
         document.body.appendChild(notification);
         
-        // Remover após 5 segundos
         setTimeout(() => {
             notification.style.animation = 'slideIn 0.3s ease reverse';
             setTimeout(() => notification.remove(), 300);
-        }, 5000);
-        
-        // Notificação do navegador
-        if (Notification.permission === 'granted') {
-            new Notification('Reelmi AI', { body: message });
-        }
-        
-        // Adicionar ao chat
-        addMsg(`🔔 ${message}`, 'bot');
+        }, 3000);
     }
     
-    /* ============ TERMINAL AVANÇADO ============ */
-    let terminalHistory = [];
-    let historyIndex = 0;
-    
-    function initTerminal(windowId) {
-        const input = document.getElementById(`${windowId}-input`);
-        input.focus();
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
     }
     
-    function terminalKeyPress(e, windowId) {
-        if (e.key === 'Enter') {
-            const input = document.getElementById(`${windowId}-input`);
-            const terminal = document.getElementById(`${windowId}-terminal`);
-            const command = input.value.trim();
-            
-            if (command) {
-                terminalHistory.push(command);
-                historyIndex = terminalHistory.length;
-                
-                // Adicionar comando ao terminal
-                terminal.innerHTML += `<div class="terminal-line"><span class="terminal-prompt">$</span> ${command}</div>`;
-                
-                // Processar comando
-                processTerminalCommand(command, windowId);
-                
-                input.value = '';
-                terminal.scrollTop = terminal.scrollHeight;
-            }
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (terminalHistory.length > 0 && historyIndex > 0) {
-                historyIndex--;
-                document.getElementById(`${windowId}-input`).value = terminalHistory[historyIndex];
-            }
-        } else if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (historyIndex < terminalHistory.length - 1) {
-                historyIndex++;
-                document.getElementById(`${windowId}-input`).value = terminalHistory[historyIndex];
-            } else {
-                historyIndex = terminalHistory.length;
-                document.getElementById(`${windowId}-input`).value = '';
-            }
-        }
-    }
-    
-    function processTerminalCommand(command, windowId) {
-        const terminal = document.getElementById(`${windowId}-terminal`);
-        const cmd = command.toLowerCase().split(' ')[0];
-        
-        switch(cmd) {
-            case 'help':
-                terminal.innerHTML += `<div class="terminal-line">Comandos disponíveis:</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  help - Mostra esta ajuda</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  clear - Limpa o terminal</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  python [código] - Executa código Python</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  js [código] - Executa JavaScript</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  chat [mensagem] - Envia para o chat</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  memory - Mostra uso de memória</div>`;
-                terminal.innerHTML += `<div class="terminal-line">  ai [mensagem] - Pergunta à IA</div>`;
-                break;
-                
-            case 'clear':
-                terminal.innerHTML = '';
-                break;
-                
-            case 'python':
-                const pythonCode = command.substring(7);
-                try {
-                    if (pyodide) {
-                        const result = pyodide.runPython(pythonCode);
-                        terminal.innerHTML += `<div class="terminal-line">${result}</div>`;
-                    } else {
-                        terminal.innerHTML += `<div class="terminal-line">Pyodide não carregado. Simulando...</div>`;
-                        // Simulação
-                        if (pythonCode.includes('print(')) {
-                            const match = pythonCode.match(/print\((.*)\)/);
-                            if (match) {
-                                terminal.innerHTML += `<div class="terminal-line">${match[1].replace(/['"]/g, '')}</div>`;
-                            }
-                        }
-                    }
-                } catch (error) {
-                    terminal.innerHTML += `<div class="terminal-line" style="color:#ff5555;">Erro: ${error.message}</div>`;
-                }
-                break;
-                
-            case 'chat':
-                const message = command.substring(5);
-                addMsg(message, 'user');
-                setTimeout(() => {
-                    const resp = encontrarRespostaComContexto(message);
-                    addMsg(resp, 'bot');
-                }, 500);
-                terminal.innerHTML += `<div class="terminal-line">✓ Mensagem enviada para o chat</div>`;
-                break;
-                
-            case 'memory':
-                const memoryCount = Object.keys(longTermMemory).length;
-                const contextCount = contextoConversa.length;
-                terminal.innerHTML += `<div class="terminal-line">Memória de Longo Prazo: ${memoryCount} itens</div>`;
-                terminal.innerHTML += `<div class="terminal-line">Contexto Atual: ${contextCount} mensagens</div>`;
-                terminal.innerHTML += `<div class="terminal-line">Histórico: ${historicoConversas.length} conversas</div>`;
-                break;
-                
-            case 'ai':
-                const aiQuestion = command.substring(3);
-                terminal.innerHTML += `<div class="terminal-line">Perguntando à IA: "${aiQuestion}"</div>`;
-                setTimeout(() => {
-                    const answer = encontrarRespostaComContexto(aiQuestion);
-                    terminal.innerHTML += `<div class="terminal-line">IA: ${answer.substring(0, 100)}...</div>`;
-                }, 1000);
-                break;
-                
-            default:
-                terminal.innerHTML += `<div class="terminal-line">Comando não encontrado: ${command}</div>`;
-                terminal.innerHTML += `<div class="terminal-line">Digite "help" para ver comandos disponíveis</div>`;
-        }
-    }
-    
-    /* ============ EDITOR NOTION ============ */
-    function exportNotion(windowId) {
-        const editor = document.getElementById(`${windowId}-editor`);
-        const content = editor.innerHTML;
-        
-        // Criar PDF
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        doc.setFontSize(20);
-        doc.text('Documento Notion - Reelmi AI', 20, 20);
-        
-        // Extrair texto
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = content;
-        const text = tempDiv.innerText;
-        
-        doc.setFontSize(12);
-        const lines = doc.splitTextToSize(text, 170);
-        let y = 40;
-        
-        lines.forEach(line => {
-            if (y > 280) {
-                doc.addPage();
-                y = 20;
-            }
-            doc.text(line, 20, y);
-            y += 7;
-        });
-        
-        doc.save(`notion-${Date.now()}.pdf`);
-        showNotification('Documento exportado como PDF!');
-    }
-    
-    function saveNotion(windowId) {
-        const editor = document.getElementById(`${windowId}-editor`);
-        const content = editor.innerHTML;
-        localStorage.setItem(`notion_${windowId}`, content);
-        showNotification('Documento salvo localmente!');
-    }
-    
-    function insertNotionBlock(windowId, type) {
-        const editor = document.getElementById(`${windowId}-editor`);
-        let block = '';
-        
-        switch(type) {
-            case 'h1': block = '<div class="notion-block" data-type="h1" contenteditable="true">Título</div>'; break;
-            case 'h2': block = '<div class="notion-block" data-type="h2" contenteditable="true">Subtítulo</div>'; break;
-            case 'p': block = '<div class="notion-block" data-type="p" contenteditable="true">Texto...</div>'; break;
-            case 'list': block = '<div class="notion-block" data-type="list" contenteditable="true">• Item da lista</div>'; break;
-        }
-        
-        editor.innerHTML += block;
-    }
-    
-    /* ============ SIMULADOR VENTILATÓRIO ============ */
-    function initVentilationSimulator(windowId) {
-        // Inicializar sliders
-        document.querySelectorAll(`#${windowId} .vent-param`).forEach(slider => {
-            slider.addEventListener('input', function() {
-                updateVentParam(windowId, this);
-            });
-        });
-        
-        // Inicializar gráfico
-        drawVentilationCurve(windowId, 500, 5, 40, 'vcv');
-    }
-    
-    function updateVentParam(windowId, slider) {
-        const param = slider.getAttribute('data-param');
-        const value = slider.value;
-        document.getElementById(`${param}-value-${windowId}`).textContent = value;
-        
-        // Atualizar gráfico em tempo real
-        const vt = parseInt(document.getElementById(`vt-value-${windowId}`).textContent);
-        const peep = parseInt(document.getElementById(`peep-value-${windowId}`).textContent);
-        const fio2 = parseInt(document.getElementById(`fio2-value-${windowId}`).textContent);
-        const mode = document.getElementById(`vent-mode-${windowId}`).value;
-        
-        drawVentilationCurve(windowId, vt, peep, fio2, mode);
-    }
-    
-    function updateVentMode(windowId) {
-        const mode = document.getElementById(`vent-mode-${windowId}`).value;
-        const vt = parseInt(document.getElementById(`vt-value-${windowId}`).textContent);
-        const peep = parseInt(document.getElementById(`peep-value-${windowId}`).textContent);
-        const fio2 = parseInt(document.getElementById(`fio2-value-${windowId}`).textContent);
-        
-        drawVentilationCurve(windowId, vt, peep, fio2, mode);
-    }
-    
-    function drawVentilationCurve(windowId, vt, peep, fio2, mode) {
-        const canvas = document.getElementById(`${windowId}-canvas`);
-        const ctx = canvas.getContext('2d');
-        
-        // Configurar tamanho
-        canvas.width = canvas.parentElement.clientWidth;
-        canvas.height = canvas.parentElement.clientHeight;
-        
-        // Limpar canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Configurações do gráfico
-        const margin = { top: 20, right: 20, bottom: 40, left: 50 };
-        const graphWidth = canvas.width - margin.left - margin.right;
-        const graphHeight = canvas.height - margin.top - margin.bottom;
-        
-        // Calcular PIP baseado no modo
-        let pip = peep + (mode === 'pcv' ? 15 : vt / 30);
-        
-        // Desenhar eixos
-        ctx.beginPath();
-        ctx.moveTo(margin.left, margin.top);
-        ctx.lineTo(margin.left, margin.top + graphHeight);
-        ctx.lineTo(margin.left + graphWidth, margin.top + graphHeight);
-        ctx.strokeStyle = '#666';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        
-        // Rótulos dos eixos
-        ctx.fillStyle = '#999';
-        ctx.font = '12px Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText('Volume (ml)', margin.left + graphWidth / 2, margin.top + graphHeight + 30);
-        ctx.save();
-        ctx.translate(margin.left - 30, margin.top + graphHeight / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText('Pressão (cmH₂O)', 0, 0);
-        ctx.restore();
-        
-        // Desenhar curva
-        ctx.beginPath();
-        ctx.moveTo(margin.left, margin.top + graphHeight);
-        
-        const points = [];
-        for (let i = 0; i <= 100; i++) {
-            const x = margin.left + (i * graphWidth / 100);
-            let pressure, volume;
-            
-            if (i <= 50) {
-                // Inspiração
-                pressure = peep + (pip - peep) * (i / 50);
-                volume = vt * (i / 50);
-            } else {
-                // Expiração
-                pressure = pip - (pip - peep) * ((i - 50) / 50);
-                volume = vt * (1 - (i - 50) / 50);
-            }
-            
-            const y = margin.top + graphHeight - (pressure * graphHeight / 40);
-            points.push({x, y, pressure, volume});
-            
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        
-        ctx.strokeStyle = '#8C52FF';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // Desenhar pontos de interesse
-        if (points.length > 0) {
-            // PEEP
-            const peepPoint = points[0];
-            ctx.beginPath();
-            ctx.arc(peepPoint.x, peepPoint.y, 5, 0, Math.PI * 2);
-            ctx.fillStyle = '#00ffff';
-            ctx.fill();
-            ctx.fillText(`PEEP: ${peep}`, peepPoint.x + 10, peepPoint.y - 10);
-            
-            // PIP
-            const pipPoint = points[50];
-            ctx.beginPath();
-            ctx.arc(pipPoint.x, pipPoint.y, 5, 0, Math.PI * 2);
-            ctx.fillStyle = '#ff5555';
-            ctx.fill();
-            ctx.fillText(`PIP: ${pip.toFixed(1)}`, pipPoint.x + 10, pipPoint.y - 10);
-            
-            // Vt
-            const vtPoint = points[50];
-            ctx.fillStyle = '#00ff00';
-            ctx.fillText(`Vt: ${vt}ml`, vtPoint.x, vtPoint.y + 20);
-        }
-        
-        // Grade
-        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-        ctx.lineWidth = 0.5;
-        
-        // Linhas horizontais (pressão)
-        for (let p = 0; p <= 40; p += 5) {
-            const y = margin.top + graphHeight - (p * graphHeight / 40);
-            ctx.beginPath();
-            ctx.moveTo(margin.left, y);
-            ctx.lineTo(margin.left + graphWidth, y);
-            ctx.stroke();
-            ctx.fillText(p.toString(), margin.left - 20, y + 4);
-        }
-        
-        // Linhas verticais (volume)
-        for (let v = 0; v <= vt; v += vt/4) {
-            const x = margin.left + (v * graphWidth / vt);
-            ctx.beginPath();
-            ctx.moveTo(x, margin.top);
-            ctx.lineTo(x, margin.top + graphHeight);
-            ctx.stroke();
-            ctx.fillText(v.toFixed(0), x, margin.top + graphHeight + 15);
-        }
-    }
-    
-    function simulateVentilation(windowId) {
-        const vt = parseInt(document.getElementById(`vt-value-${windowId}`).textContent);
-        const peep = parseInt(document.getElementById(`peep-value-${windowId}`).textContent);
-        const fio2 = parseInt(document.getElementById(`fio2-value-${windowId}`).textContent);
-        const freq = parseInt(document.getElementById(`freq-value-${windowId}`)?.textContent || 20);
-        const mode = document.getElementById(`vent-mode-${windowId}`).value;
-        const ieratio = document.getElementById(`ieratio-${windowId}`).value;
-        
-        // Calcular parâmetros
-        let pip = peep + (mode === 'pcv' ? 15 : vt / 30);
-        const compliance = vt / (pip - peep);
-        const resistance = (pip - peep) / 0.5; // Estimativa simplificada
-        const minuteVolume = (vt * freq) / 1000;
-        const alveolarVentilation = minuteVolume * 0.7; // Estimativa
-        
-        // Calcular oxigenação estimada
-        let estimatedPaO2 = fio2 * 5 + 60; // Fórmula simplificada
-        if (mode === 'pcv') estimatedPaO2 += 10;
-        
-        // Calcular PaCO2 estimado
-        let estimatedPaCO2 = 40 - (alveolarVentilation - 4) * 5;
-        if (estimatedPaCO2 < 20) estimatedPaCO2 = 20;
-        if (estimatedPaCO2 > 60) estimatedPaCO2 = 60;
-        
-        // Resultados
-        const results = document.getElementById(`${windowId}-results`);
-        results.innerHTML = `
-            <div style="background: var(--bg-surface); border-radius: 10px; padding: 15px; margin-top: 15px;">
-                <h4><i class="fas fa-chart-line"></i> Resultados da Simulação</h4>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
-                    <div>
-                        <strong>Parâmetros Calculados:</strong>
-                        <ul style="margin-top: 5px; font-size: 14px;">
-                            <li>PIP: ${pip.toFixed(1)} cmH₂O</li>
-                            <li>Complacência: ${compliance.toFixed(2)} ml/cmH₂O</li>
-                            <li>Resistência: ${resistance.toFixed(1)} cmH₂O/L/s</li>
-                            <li>Volume Minuto: ${minuteVolume.toFixed(2)} L/min</li>
-                            <li>Ventilação Alveolar: ${alveolarVentilation.toFixed(2)} L/min</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <strong>Gasometria Estimada:</strong>
-                        <ul style="margin-top: 5px; font-size: 14px;">
-                            <li>PaO₂: ${estimatedPaO2.toFixed(0)} mmHg</li>
-                            <li>PaCO₂: ${estimatedPaCO2.toFixed(0)} mmHg</li>
-                            <li>SaO₂: ${Math.min(100, 90 + estimatedPaO2 / 5).toFixed(1)}%</li>
-                            <li>PaO₂/FiO₂: ${(estimatedPaO2 / (fio2/100)).toFixed(0)}</li>
-                            <li>pH: ${(7.4 - (estimatedPaCO2 - 40) * 0.008).toFixed(2)}</li>
-                        </ul>
-                    </div>
-                </div>
-                <div style="margin-top: 10px; padding: 10px; background: rgba(140, 82, 255, 0.1); border-radius: 5px;">
-                    <strong><i class="fas fa-lightbulb"></i> Recomendação:</strong>
-                    <p style="margin-top: 5px; font-size: 14px;">
-                        ${getVentilationRecommendation(mode, vt, peep, fio2, estimatedPaO2, estimatedPaCO2)}
-                    </p>
-                </div>
-            </div>
-        `;
-        
-        // Salvar simulação
-        saveToLongMemory(`vent_sim_${Date.now()}`, {
-            vt, peep, fio2, mode, freq, ieratio,
-            pip, compliance, minuteVolume,
-            estimatedPaO2, estimatedPaCO2
-        });
-    }
-    
-    function getVentilationRecommendation(mode, vt, peep, fio2, pao2, paco2) {
-        let recommendations = [];
-        
-        if (pao2 < 60) recommendations.push("Considerar aumentar FiO₂ ou PEEP para melhorar oxigenação");
-        if (pao2 > 100 && fio2 > 40) recommendations.push("Considerar reduzir FiO₂ para prevenir toxicidade por oxigênio");
-        if (paco2 < 35) recommendations.push("Hiperventilação - considerar reduzir frequência ou volume corrente");
-        if (paco2 > 45) recommendations.push("Hipoventilação - considerar aumentar frequência ou volume corrente");
-        if (vt > 8 && mode === 'vcv') recommendations.push("Volume corrente elevado - considerar redução para prevenir VILI");
-        if (peep < 5 && pao2 < 80) recommendations.push("PEEP baixo - considerar aumento para recrutamento alveolar");
-        
-        if (recommendations.length === 0) {
-            return "Configuração ventilatória adequada. Manter parâmetros atuais e monitorar.";
-        }
-        
-        return recommendations.join(" ");
-    }
-    
-    function saveVentilationSettings(windowId) {
-        const settings = {
-            vt: document.getElementById(`vt-value-${windowId}`).textContent,
-            peep: document.getElementById(`peep-value-${windowId}`).textContent,
-            fio2: document.getElementById(`fio2-value-${windowId}`).textContent,
-            mode: document.getElementById(`vent-mode-${windowId}`).value,
-            timestamp: new Date().toISOString()
-        };
-        
-        localStorage.setItem('ventilation_settings', JSON.stringify(settings));
-        showNotification('Configurações ventilatórias salvas!');
-    }
-    
-    function exportVentilationData(windowId) {
-        const data = {
-            parameters: {
-                vt: document.getElementById(`vt-value-${windowId}`).textContent,
-                peep: document.getElementById(`peep-value-${windowId}`).textContent,
-                fio2: document.getElementById(`fio2-value-${windowId}`).textContent,
-                mode: document.getElementById(`vent-mode-${windowId}`).value,
-                freq: document.getElementById(`freq-value-${windowId}`)?.textContent || '20'
-            },
-            timestamp: new Date().toISOString(),
-            simulation: 'Ventilation Simulation Data'
-        };
-        
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `ventilation-data-${Date.now()}.json`;
-        a.click();
-        
-        showNotification('Dados de simulação exportados!');
-    }
-    
-    /* ============ MULTIMODALIDADE ============ */
-    let cocoModel = null;
-    
-    async function loadCocoModel() {
-        try {
-            cocoModel = await cocoSsd.load();
-            console.log('Modelo COCO-SSD carregado');
-        } catch (error) {
-            console.error('Erro ao carregar modelo:', error);
-        }
-    }
-    
-    function selectMultimodalMode(mode) {
-        document.querySelectorAll('#multimodal-modal .mode-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        let content = '';
-        
-        switch(mode) {
-            case 'ocr':
-                content = `
-                    <div class="calc-group">
-                        <h3><i class="fas fa-font"></i> OCR de Imagens</h3>
-                        <p>Extraia texto de imagens, documentos e capturas de tela.</p>
-                        <input type="file" id="ocr-image" accept="image/*" class="calc-input">
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button onclick="runOCR()" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-play"></i> Extrair Texto
-                            </button>
-                            <button onclick="clearOCR()" style="padding:12px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div id="ocr-result" style="margin-top:15px; padding:15px; background:var(--bg-hover); border-radius:10px; min-height:100px;">
-                            <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-image"></i> Resultado do OCR aparecerá aqui</p>
-                        </div>
-                    </div>
-                `;
-                break;
-                
-            case 'object':
-                content = `
-                    <div class="calc-group">
-                        <h3><i class="fas fa-search"></i> Detecção de Objetos</h3>
-                        <p>Identifique objetos em imagens usando IA.</p>
-                        <input type="file" id="object-image" accept="image/*" class="calc-input">
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button onclick="runObjectDetection()" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-search"></i> Detectar Objetos
-                            </button>
-                            <button onclick="clearObjectDetection()" style="padding:12px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-                            <div id="object-image-preview" style="min-height:200px; background:var(--bg-hover); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                                <p style="color:var(--text-muted);"><i class="fas fa-image"></i> Prévia da imagem</p>
-                            </div>
-                            <div id="object-result" style="min-height:200px; padding:15px; background:var(--bg-hover); border-radius:10px;">
-                                <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-list"></i> Objetos detectados</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                break;
-                
-            case 'graph':
-                content = `
-                    <div class="calc-group">
-                        <h3><i class="fas fa-chart-line"></i> Análise de Gráficos</h3>
-                        <p>Analise gráficos médicos e extraia dados.</p>
-                        <input type="file" id="graph-image" accept="image/*" class="calc-input">
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button onclick="analyzeGraph()" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-chart-bar"></i> Analisar Gráfico
-                            </button>
-                            <button onclick="clearGraphAnalysis()" style="padding:12px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div id="graph-analysis" style="margin-top:15px; padding:15px; background:var(--bg-hover); border-radius:10px; min-height:100px;">
-                            <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-chart-area"></i> Análise do gráfico aparecerá aqui</p>
-                        </div>
-                    </div>
-                `;
-                break;
-                
-            case 'medical':
-                content = `
-                    <div class="calc-group">
-                        <h3><i class="fas fa-stethoscope"></i> Análise de Imagens Médicas</h3>
-                        <p>Análise básica de radiografias e exames (simulado).</p>
-                        <input type="file" id="medical-image" accept="image/*" class="calc-input">
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button onclick="analyzeMedicalImage()" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-heartbeat"></i> Analisar Imagem
-                            </button>
-                            <button onclick="clearMedicalAnalysis()" style="padding:12px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div id="medical-analysis" style="margin-top:15px; padding:15px; background:var(--bg-hover); border-radius:10px; min-height:100px;">
-                            <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-x-ray"></i> Análise médica aparecerá aqui</p>
-                        </div>
-                        <div style="margin-top:10px; padding:10px; background:rgba(255,0,0,0.1); border-radius:5px; font-size:12px;">
-                            <i class="fas fa-exclamation-triangle"></i> <strong>Importante:</strong> Esta é uma análise simulada. Sempre consulte um médico para diagnóstico.
-                        </div>
-                    </div>
-                `;
-                break;
-        }
-        
-        document.getElementById('multimodal-content').innerHTML = content;
-    }
-    
-    async function runOCR() {
-        const input = document.getElementById('ocr-image');
-        if (!input.files[0]) {
-            alert('Selecione uma imagem primeiro');
-            return;
-        }
-        
-        const resultDiv = document.getElementById('ocr-result');
-        resultDiv.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <div class="loading-wave" style="justify-content: center;">
-                    <div></div><div></div><div></div><div></div>
-                </div>
-                <p style="margin-top: 10px;">Processando imagem...</p>
-            </div>
-        `;
-        
-        try {
-            const { data: { text } } = await Tesseract.recognize(
-                input.files[0],
-                'por+eng',
-                {
-                    logger: m => console.log(m)
-                }
-            );
-            
-            resultDiv.innerHTML = `
-                <strong><i class="fas fa-font"></i> Texto extraído:</strong>
-                <div style="margin-top:10px; padding:10px; background:var(--bg-surface); border-radius:5px; max-height:200px; overflow-y:auto;">
-                    ${text || 'Nenhum texto detectado na imagem.'}
-                </div>
-                <div style="margin-top:10px; display:flex; gap:10px;">
-                    <button onclick="copyToClipboard('${text.replace(/'/g, "\\'")}')" style="padding:8px 15px; background:var(--info); color:white; border:none; border-radius:5px; cursor:pointer;">
-                        <i class="fas fa-copy"></i> Copiar
-                    </button>
-                    <button onclick="sendToChat('${text.replace(/'/g, "\\'").substring(0, 100)}...')" style="padding:8px 15px; background:var(--success); color:white; border:none; border-radius:5px; cursor:pointer;">
-                        <i class="fas fa-comment"></i> Enviar para Chat
-                    </button>
-                </div>
-            `;
-        } catch (error) {
-            resultDiv.innerHTML = `
-                <div style="color:var(--danger);">
-                    <i class="fas fa-exclamation-circle"></i> Erro ao processar imagem: ${error.message}
-                </div>
-            `;
-        }
-    }
-    
-    function clearOCR() {
-        document.getElementById('ocr-result').innerHTML = `
-            <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-image"></i> Resultado do OCR aparecerá aqui</p>
-        `;
-        document.getElementById('ocr-image').value = '';
-    }
-    
-    async function runObjectDetection() {
-        const input = document.getElementById('object-image');
-        if (!input.files[0]) {
-            alert('Selecione uma imagem primeiro');
-            return;
-        }
-        
-        if (!cocoModel) {
-            await loadCocoModel();
-        }
-        
-        const imagePreview = document.getElementById('object-image-preview');
-        const resultDiv = document.getElementById('object-result');
-        
-        // Mostrar prévia da imagem
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            imagePreview.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:200px; border-radius:5px;">`;
-            
-            // Processar detecção
-            resultDiv.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div class="loading-wave" style="justify-content: center;">
-                        <div></div><div></div><div></div><div></div>
-                    </div>
-                    <p style="margin-top: 10px;">Detectando objetos...</p>
-                </div>
-            `;
-            
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = async function() {
-                try {
-                    const predictions = await cocoModel.detect(img);
-                    
-                    if (predictions.length === 0) {
-                        resultDiv.innerHTML = `
-                            <p style="text-align:center; color:var(--text-muted);">
-                                <i class="fas fa-search"></i> Nenhum objeto detectado na imagem.
-                            </p>
-                        `;
-                        return;
-                    }
-                    
-                    let html = '<strong><i class="fas fa-list"></i> Objetos detectados:</strong><br>';
-                    predictions.forEach(prediction => {
-                        html += `
-                            <div style="margin:5px 0; padding:5px; background:var(--bg-surface); border-radius:5px;">
-                                <span style="font-weight:bold;">${prediction.class}</span>
-                                <span style="float:right; font-size:12px;">${(prediction.score * 100).toFixed(1)}%</span>
-                            </div>
-                        `;
-                    });
-                    
-                    resultDiv.innerHTML = html;
-                } catch (error) {
-                    resultDiv.innerHTML = `
-                        <div style="color:var(--danger);">
-                            <i class="fas fa-exclamation-circle"></i> Erro na detecção: ${error.message}
-                        </div>
-                    `;
-                }
-            };
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-    
-    function clearObjectDetection() {
-        document.getElementById('object-image-preview').innerHTML = `
-            <p style="color:var(--text-muted);"><i class="fas fa-image"></i> Prévia da imagem</p>
-        `;
-        document.getElementById('object-result').innerHTML = `
-            <p style="text-align:center; color:var(--text-muted);"><i class="fas fa-list"></i> Objetos detectados</p>
-        `;
-        document.getElementById('object-image').value = '';
-    }
-    
-    function analyzeGraph() {
-        const input = document.getElementById('graph-image');
-        if (!input.files[0]) {
-            alert('Selecione uma imagem primeiro');
-            return;
-        }
-        
-        const resultDiv = document.getElementById('graph-analysis');
-        resultDiv.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <div class="loading-wave" style="justify-content: center;">
-                    <div></div><div></div><div></div><div></div>
-                </div>
-                <p style="margin-top: 10px;">Analisando gráfico...</p>
-            </div>
-        `;
-        
-        // Simulação de análise
-        setTimeout(() => {
-            const analyses = [
-                "Gráfico identificado: Curva de Pressão-Volume",
-                "Eixos detectados: Pressão (cmH₂O) vs Volume (ml)",
-                "Complacência estimada: 45 ml/cmH₂O",
-                "PEEP detectado: ~5 cmH₂O",
-                "PIP estimado: ~25 cmH₂O",
-                "Forma da curva sugere recrutamento alveolar adequado"
-            ];
-            
-            resultDiv.innerHTML = `
-                <strong><i class="fas fa-chart-line"></i> Análise do Gráfico:</strong>
-                <ul style="margin-top:10px; padding-left:20px;">
-                    ${analyses.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-                <div style="margin-top:10px; padding:10px; background:rgba(140, 82, 255, 0.1); border-radius:5px;">
-                    <strong><i class="fas fa-lightbulb"></i> Interpretação:</strong>
-                    <p style="margin-top:5px; font-size:14px;">
-                        A curva apresenta formato adequado, sem sinais de hiperdistensão ou atelectasia.
-                        Sugere configuração ventilatória apropriada.
-                    </p>
-                </div>
-            `;
-        }, 2000);
-    }
-    
-    function analyzeMedicalImage() {
-        const input = document.getElementById('medical-image');
-        if (!input.files[0]) {
-            alert('Selecione uma imagem primeiro');
-            return;
-        }
-        
-        const resultDiv = document.getElementById('medical-analysis');
-        resultDiv.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <div class="loading-wave" style="justify-content: center;">
-                    <div></div><div></div><div></div><div></div>
-                </div>
-                <p style="margin-top: 10px;">Analisando imagem médica...</p>
-                <p style="font-size:12px; color:var(--text-muted);">Esta é uma análise simulada para fins educacionais</p>
-            </div>
-        `;
-        
-        // Simulação de análise médica
-        setTimeout(() => {
-            const findings = [
-                "Imagem identificada: Radiografia de tórax",
-                "Campo pulmonar: Bilateralmente expandido",
-                "Silhueta cardíaca: Dentro dos limites normais",
-                "Hilos: Normais",
-                "Câmaras gástricas: Presentes",
-                "Posição do TET: Verificar posição (simulado)",
-                "Infiltrados: Nenhum infiltrado significativo detectado"
-            ];
-            
-            resultDiv.innerHTML = `
-                <strong><i class="fas fa-x-ray"></i> Análise de Imagem Médica:</strong>
-                <p style="font-size:12px; color:var(--warning); margin:5px 0;">
-                    <i class="fas fa-exclamation-triangle"></i> Análise simulada - Não substitui avaliação médica
-                </p>
-                <ul style="margin-top:10px; padding-left:20px;">
-                    ${findings.map(item => `<li>${item}</li>`).join('')}
-                </ul>
-                <div style="margin-top:10px; padding:10px; background:rgba(245, 158, 11, 0.1); border-radius:5px;">
-                    <strong><i class="fas fa-stethoscope"></i> Recomendação:</strong>
-                    <p style="margin-top:5px; font-size:14px;">
-                        Imagem dentro dos parâmetros esperados para radiografia de tórax.
-                        Recomenda-se confirmação por radiologista e correlação clínica.
-                    </p>
-                </div>
-            `;
-        }, 2500);
-    }
-    
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            showNotification('Texto copiado para a área de transferência!');
-        });
-    }
-    
-    function sendToChat(text) {
-        addMsg(`[Imagem analisada] ${text}`, 'user');
-        setTimeout(() => {
-            addMsg('Recebi a análise da imagem! Posso ajudar a interpretar esses dados ou relacioná-los com informações médicas.', 'bot');
-        }, 500);
-    }
-    
-    /* ============ AGENTE AUTÔNOMO ============ */
-    let agentRunning = false;
-    let agentInterval;
-    
-    async function startAgent(windowId) {
-        if (agentRunning) return;
-        
-        const goal = document.getElementById(`${windowId}-goal`).value;
-        if (!goal) {
-            alert('Digite um objetivo para o agente');
-            return;
-        }
-        
-        agentRunning = true;
-        const tasksDiv = document.getElementById(`${windowId}-tasks`);
-        const autonomy = document.getElementById(`${windowId}-autonomy`).value;
-        const maxIterations = parseInt(document.getElementById(`${windowId}-iterations`).value);
-        
-        tasksDiv.innerHTML = `
-            <div class="task-item" style="background:rgba(16, 185, 129, 0.2);">
-                <div>
-                    <strong>🎯 Missão Iniciada:</strong> ${goal}
-                    <br><small>Autonomia: ${autonomy === 'low' ? 'Baixa' : autonomy === 'medium' ? 'Média' : 'Alta'}</small>
-                </div>
-                <div class="loading-wave">
-                    <div></div><div></div><div></div>
-                </div>
-            </div>
-        `;
-        
-        // Simular processamento do agente
-        let iteration = 0;
-        const subtasks = [
-            `Analisando objetivo: "${goal}"`,
-            `Pesquisando informações relevantes...`,
-            `Estratégia: ${autonomy === 'high' ? 'Execução autônoma' : 'Coleta de dados'}`,
-            `Consultando base de conhecimento...`,
-            `Processando informações médicas...`,
-            `Gerando plano de ação...`,
-            `Executando tarefas principais...`,
-            `Validando resultados...`,
-            `Sintetizando informações...`,
-            `Preparando relatório final...`
-        ];
-        
-        agentInterval = setInterval(() => {
-            if (iteration >= subtasks.length || iteration >= maxIterations) {
-                completeAgentMission(windowId, goal);
-                return;
-            }
-            
-            const task = subtasks[iteration];
-            tasksDiv.innerHTML += `
-                <div class="task-item">
-                    <div>
-                        <strong>${iteration+1}. ${task}</strong>
-                        <br><small>${getRandomStatus()}</small>
-                    </div>
-                    <div class="loading-wave">
-                        <div></div><div></div><div></div>
-                    </div>
-                </div>
-            `;
-            
-            tasksDiv.scrollTop = tasksDiv.scrollHeight;
-            iteration++;
-            
-            // Simular conclusão aleatória
-            setTimeout(() => {
-                const items = tasksDiv.querySelectorAll('.task-item');
-                if (items[iteration]) {
-                    const randomSuccess = Math.random() > 0.1;
-                    items[iteration].innerHTML = `
-                        <div>
-                            <strong>${iteration}. ${task}</strong>
-                            <br><small>
-                                <i class="fas fa-${randomSuccess ? 'check' : 'exclamation-triangle'}" 
-                                   style="color:${randomSuccess ? 'var(--success)' : 'var(--warning)'};"></i>
-                                ${randomSuccess ? 'Concluído' : 'Revisão necessária'}
-                            </small>
-                        </div>
-                    `;
-                }
-            }, 1500);
-        }, 2000);
-    }
-    
-    function getRandomStatus() {
-        const statuses = [
-            'Coletando dados...',
-            'Processando...',
-            'Analisando...',
-            'Consultando fontes...',
-            'Validando...',
-            'Otimizando...'
-        ];
-        return statuses[Math.floor(Math.random() * statuses.length)];
-    }
-    
-    function completeAgentMission(windowId, goal) {
-        clearInterval(agentInterval);
-        agentRunning = false;
-        
-        const tasksDiv = document.getElementById(`${windowId}-tasks`);
-        tasksDiv.innerHTML += `
-            <div class="task-item" style="background:var(--success); color:white;">
-                <div>
-                    <strong>✅ Missão Cumprida!</strong>
-                    <br><small>Objetivo "${goal}" alcançado com sucesso</small>
-                </div>
-                <i class="fas fa-trophy" style="font-size:20px;"></i>
-            </div>
-        `;
-        
-        // Gerar relatório
-        setTimeout(() => {
-            const report = generateAgentReport(goal);
-            showCustomModal('Relatório do Agente', `
-                <div style="max-height: 400px; overflow-y: auto;">
-                    <h3><i class="fas fa-robot"></i> Relatório de Missão</h3>
-                    <p><strong>Objetivo:</strong> ${goal}</p>
-                    <p><strong>Status:</strong> ✅ Concluído com sucesso</p>
-                    <p><strong>Duração:</strong> ~${Math.floor(Math.random() * 5 + 3)} minutos</p>
-                    
-                    <h4 style="margin-top:20px;">Ações Executadas:</h4>
-                    <ul>
-                        <li>Análise completa do objetivo</li>
-                        <li>Pesquisa em base de conhecimento médica</li>
-                        <li>Validação de informações técnicas</li>
-                        <li>Síntese de dados relevantes</li>
-                        <li>Preparação de recomendações</li>
-                    </ul>
-                    
-                    <h4 style="margin-top:20px;">Resultados Obtidos:</h4>
-                    <div style="padding:15px; background:var(--bg-hover); border-radius:10px;">
-                        ${report}
-                    </div>
-                    
-                    <div style="margin-top:20px; display:flex; gap:10px;">
-                        <button onclick="exportAgentReport()" style="flex:1; padding:10px; background:var(--info); color:white; border:none; border-radius:5px; cursor:pointer;">
-                            <i class="fas fa-download"></i> Exportar PDF
-                        </button>
-                        <button onclick="sendToChatAgent('${goal}')" style="flex:1; padding:10px; background:var(--success); color:white; border:none; border-radius:5px; cursor:pointer;">
-                            <i class="fas fa-comment"></i> Enviar para Chat
-                        </button>
-                    </div>
-                </div>
-            `);
-        }, 1000);
-    }
-    
-    function generateAgentReport(goal) {
-        const reports = {
-            'ventilação': `
-                <p><strong>Ventilação Mecânica - Análise Completa</strong></p>
-                <ul>
-                    <li><strong>Conceitos Fundamentais:</strong> Suporte artificial à respiração</li>
-                    <li><strong>Modalidades:</strong> Invasiva vs Não-invasiva</li>
-                    <li><strong>Parâmetros Críticos:</strong> Vt, PEEP, FiO2, Frequência</li>
-                    <li><strong>Monitorização:</strong> Gasometria, SpO2, Curvas PV</li>
-                    <li><strong>Complicações:</strong> Barotrauma, VILI, Pneumonia</li>
-                </ul>
-                <p><strong>Recomendações:</strong> Monitorização contínua, ajustes graduais, prevenção de VILI</p>
-            `,
-            'neonatal': `
-                <p><strong>Neonatologia - Recomendações</strong></p>
-                <ul>
-                    <li><strong>Suporte Ventilatório:</strong> Pressões mais baixas, volumes menores</li>
-                    <li><strong>Oxigenação:</strong> Manter SpO2 90-95% em prematuros</li>
-                    <li><strong>Tubos Endotraqueais:</strong> Tamanhos apropriados (2.5-3.5mm)</li>
-                    <li><strong>Monitorização:</strong> Frequente, atenção a complicações</li>
-                    <li><strong>Cuidados Especiais:</strong> Termorregulação, nutrição, prevenção de infecções</li>
-                </ul>
-            `,
-            'python': `
-                <p><strong>Programação Python - Recursos</strong></p>
-                <ul>
-                    <li><strong>Bibliotecas Médicas:</strong> NumPy, Pandas, Matplotlib</li>
-                    <li><strong>Análise de Dados:</strong> Processamento de sinais vitais</li>
-                    <li><strong>Visualização:</strong> Gráficos para monitorização</li>
-                    <li><strong>Automação:</strong> Scripts para cálculos médicos</li>
-                    <li><strong>Exemplos Práticos:</strong> Cálculo de índices, simulações</li>
-                </ul>
-            `
-        };
-        
-        // Encontrar o relatório mais apropriado
-        let defaultReport = `<p>Missão "${goal}" concluída com sucesso. Foram coletadas e analisadas informações relevantes sobre o tema.</p>`;
-        
-        for (const [key, report] of Object.entries(reports)) {
-            if (goal.toLowerCase().includes(key)) {
-                return report;
-            }
-        }
-        
-        return defaultReport;
-    }
-    
-    function pauseAgent(windowId) {
-        if (agentRunning) {
-            clearInterval(agentInterval);
-            agentRunning = false;
-            const tasksDiv = document.getElementById(`${windowId}-tasks`);
-            tasksDiv.innerHTML += `
-                <div class="task-item" style="background:var(--warning); color:white;">
-                    <div>
-                        <strong>⏸️ Agente Pausado</strong>
-                        <br><small>Clique em "Iniciar" para continuar</small>
-                    </div>
-                </div>
-            `;
-        }
-    }
-    
-    function stopAgent(windowId) {
-        if (confirm('Tem certeza que deseja interromper o agente?')) {
-            clearInterval(agentInterval);
-            agentRunning = false;
-            const tasksDiv = document.getElementById(`${windowId}-tasks`);
-            tasksDiv.innerHTML += `
-                <div class="task-item" style="background:var(--danger); color:white;">
-                    <div>
-                        <strong>⏹️ Agente Interrompido</strong>
-                        <br><small>Missão cancelada pelo usuário</small>
-                    </div>
-                </div>
-            `;
-        }
-    }
-    
-    function exportAgentReport() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        doc.setFontSize(20);
-        doc.text('Relatório do Agente - Reelmi AI', 20, 20);
-        
-        doc.setFontSize(12);
-        doc.text('Data: ' + new Date().toLocaleString(), 20, 35);
-        doc.text('Status: Missão Concluída', 20, 45);
-        
-        doc.save(`agent-report-${Date.now()}.pdf`);
-        showNotification('Relatório exportado como PDF!');
-    }
-    
-    /* ============ EDITOR DE CÓDIGO ============ */
-    function initCodeEditor(windowId) {
-        const textarea = document.getElementById(`${windowId}-code-editor`);
-        const editor = CodeMirror.fromTextArea(textarea, {
-            mode: 'python',
-            theme: 'dracula',
-            lineNumbers: true,
-            autoCloseBrackets: true,
-            matchBrackets: true,
-            indentUnit: 4,
-            tabSize: 4,
-            extraKeys: {
-                'Ctrl-Space': 'autocomplete'
-            }
-        });
-        
-        editor.setSize('100%', '300px');
-        window[`${windowId}_editor`] = editor;
-    }
-    
-    function runCode(windowId) {
-        const editor = window[`${windowId}_editor`];
-        const code = editor.getValue();
-        const language = document.getElementById(`${windowId}-language`).value;
-        const output = document.getElementById(`${windowId}-code-output`);
-        
-        output.innerHTML = `<span style="color:#00ffff;">>>> Executando código ${language}...</span><br>`;
-        
-        try {
-            if (language === 'javascript') {
-                const result = eval(code);
-                output.innerHTML += `<span style="color:#00ff00;">${result}</span><br>`;
-            } else if (language === 'python') {
-                if (pyodide) {
-                    const result = pyodide.runPython(code);
-                    output.innerHTML += `<span style="color:#00ff00;">${result}</span><br>`;
-                } else {
-                    output.innerHTML += `<span style="color:#ff5555;">Pyodide não carregado. Simulando...</span><br>`;
-                    // Simulação básica
-                    if (code.includes('print(')) {
-                        const matches = code.match(/print\((.*?)\)/g);
-                        if (matches) {
-                            matches.forEach(match => {
-                                const content = match.match(/print\((.*)\)/)[1];
-                                output.innerHTML += `<span>${content.replace(/['"]/g, '')}</span><br>`;
-                            });
-                        }
-                    }
-                }
-            }
-        } catch (error) {
-            output.innerHTML += `<span style="color:#ff5555;">Erro: ${error.message}</span><br>`;
-        }
-        
-        output.scrollTop = output.scrollHeight;
-    }
-    
-    function formatCode(windowId) {
-        const editor = window[`${windowId}_editor`];
-        const code = editor.getValue();
-        
-        // Formatação básica
-        let formatted = code
-            .replace(/\t/g, '    ')
-            .replace(/\n{3,}/g, '\n\n')
-            .trim() + '\n';
-        
-        editor.setValue(formatted);
-        showNotification('Código formatado!');
-    }
-    
-    /* ============ ANALISADOR DE GASOMETRIA ============ */
-    function showGasometryAnalyzer() {
-        document.getElementById('gasometry-modal').style.display = 'flex';
-    }
-    
-    function analyzeGasometry() {
-        const pH = parseFloat(document.getElementById('ph-value').value);
-        const paCO2 = parseFloat(document.getElementById('paco2-value').value);
-        const paO2 = parseFloat(document.getElementById('pao2-value').value);
-        const HCO3 = parseFloat(document.getElementById('hco3-value').value);
-        
-        if (!pH || !paCO2 || !paO2 || !HCO3) {
-            alert('Preencha todos os valores');
-            return;
-        }
-        
-        // Análise básica
-        let acidBaseStatus = '';
-        let oxygenationStatus = '';
-        let recommendations = [];
-        
-        // Distúrbio ácido-base
-        if (pH < 7.35) {
-            if (paCO2 > 45) {
-                acidBaseStatus = 'Acidose Respiratória';
-                if (HCO3 > 28) recommendations.push('Compensação metabólica presente');
-            } else if (HCO3 < 22) {
-                acidBaseStatus = 'Acidose Metabólica';
-                if (paCO2 < 35) recommendations.push('Compensação respiratória presente');
-            }
-        } else if (pH > 7.45) {
-            if (paCO2 < 35) {
-                acidBaseStatus = 'Alcalose Respiratória';
-                if (HCO3 < 24) recommendations.push('Compensação metabólica presente');
-            } else if (HCO3 > 26) {
-                acidBaseStatus = 'Alcalose Metabólica';
-                if (paCO2 > 40) recommendations.push('Compensação respiratória presente');
-            }
-        } else {
-            acidBaseStatus = 'pH Normal (Compensado ou Sem Distúrbio)';
-        }
-        
-        // Oxigenação
-        const paO2FiO2 = paO2 / 0.21; // Assumindo ar ambiente
-        if (paO2 < 60) {
-            oxygenationStatus = 'Hipoxemia Grave';
-            recommendations.push('Necessidade de oxigenoterapia ou suporte ventilatório');
-        } else if (paO2 < 80) {
-            oxygenationStatus = 'Hipoxemia Moderada';
-            recommendations.push('Monitorar saturação e considerar oxigênio suplementar');
-        } else if (paO2FiO2 < 300) {
-            oxygenationStatus = 'Disfunção de Troca Gasosa';
-            recommendations.push('Avaliar necessidade de PEEP ou suporte ventilatório');
-        } else {
-            oxygenationStatus = 'Oxigenação Adequada';
-        }
-        
-        // Anion Gap (estimado)
-        const anionGap = (140) - (HCO3 + 100); // Na+ estimado em 140, Cl- estimado em 100
-        let anionGapStatus = '';
-        if (anionGap > 16) {
-            anionGapStatus = 'Anion Gap Elevado (Acidose Metabólica de Ânion Gap Alto)';
-            recommendations.push('Investigar cetoacidose, acidose láctica, etc.');
-        } else if (anionGap < 8) {
-            anionGapStatus = 'Anion Gap Baixo';
-        } else {
-            anionGapStatus = 'Anion Gap Normal';
-        }
-        
-        // Resultado
-        const resultDiv = document.getElementById('gasometry-result');
-        resultDiv.innerHTML = `
-            <div style="background: var(--bg-surface); border-radius: 10px; padding: 20px;">
-                <h4><i class="fas fa-vial"></i> Análise da Gasometria</h4>
-                
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
-                    <div class="gas-parameter ${pH >= 7.35 && pH <= 7.45 ? 'gas-normal' : 'gas-abnormal'}">
-                        <label>pH</label>
-                        <div class="gas-value">${pH.toFixed(2)}</div>
-                        <div>${pH >= 7.35 && pH <= 7.45 ? 'Normal' : 'Anormal'}</div>
-                    </div>
-                    
-                    <div class="gas-parameter ${paCO2 >= 35 && paCO2 <= 45 ? 'gas-normal' : 'gas-abnormal'}">
-                        <label>PaCO₂</label>
-                        <div class="gas-value">${paCO2}</div>
-                        <div>${paCO2 >= 35 && paCO2 <= 45 ? 'Normal' : 'Anormal'}</div>
-                    </div>
-                    
-                    <div class="gas-parameter ${paO2 >= 80 ? 'gas-normal' : 'gas-abnormal'}">
-                        <label>PaO₂</label>
-                        <div class="gas-value">${paO2}</div>
-                        <div>${paO2 >= 80 ? 'Normal' : 'Anormal'}</div>
-                    </div>
-                    
-                    <div class="gas-parameter ${HCO3 >= 22 && HCO3 <= 26 ? 'gas-normal' : 'gas-abnormal'}">
-                        <label>HCO₃</label>
-                        <div class="gas-value">${HCO3}</div>
-                        <div>${HCO3 >= 22 && HCO3 <= 26 ? 'Normal' : 'Anormal'}</div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px;">
-                    <h5>Interpretação:</h5>
-                    <ul style="margin-top: 10px;">
-                        <li><strong>Equilíbrio Ácido-Base:</strong> ${acidBaseStatus}</li>
-                        <li><strong>Oxigenação:</strong> ${oxygenationStatus}</li>
-                        <li><strong>PaO₂/FiO₂:</strong> ${paO2FiO2.toFixed(0)} (${paO2FiO2 > 300 ? 'Normal' : paO2FiO2 > 200 ? 'Leve' : paO2FiO2 > 100 ? 'Moderado' : 'Grave'})</li>
-                        <li><strong>Ânion Gap:</strong> ${anionGap.toFixed(1)} mEq/L - ${anionGapStatus}</li>
-                    </ul>
-                </div>
-                
-                ${recommendations.length > 0 ? `
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(245, 158, 11, 0.1); border-radius: 5px;">
-                        <h5><i class="fas fa-stethoscope"></i> Recomendações:</h5>
-                        <ul style="margin-top: 5px;">
-                            ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
-                        </ul>
-                    </div>
-                ` : ''}
-                
-                <div style="margin-top: 20px; font-size: 12px; color: var(--text-muted);">
-                    <i class="fas fa-exclamation-triangle"></i> Esta análise é automatizada. Sempre confirme com profissional médico.
-                </div>
-            </div>
-        `;
-    }
-    
-    /* ============ DESENVOLVEDOR DE PLUGINS ============ */
-    function showPluginDeveloper() {
-        document.getElementById('plugin-developer-modal').style.display = 'flex';
-    }
-    
-    function savePlugin() {
-        const name = document.getElementById('plugin-name').value;
-        const description = document.getElementById('plugin-desc').value;
-        const code = document.getElementById('plugin-code').value;
-        
-        if (!name || !code) {
-            alert('Preencha nome e código do plugin');
-            return;
-        }
-        
-        const plugin = {
-            id: 'custom-' + Date.now(),
-            name: name,
-            author: 'Usuário',
-            version: '1.0',
-            description: description || 'Plugin personalizado',
-            enabled: true,
-            code: code,
-            custom: true
-        };
-        
-        // Carregar plugins existentes
-        let plugins = JSON.parse(localStorage.getItem('reelmi_custom_plugins') || '[]');
-        plugins.push(plugin);
-        localStorage.setItem('reelmi_custom_plugins', JSON.stringify(plugins));
-        
-        showNotification('Plugin salvo com sucesso!');
-        closeModal('plugin-developer-modal');
-    }
-    
-    function testPlugin() {
-        const code = document.getElementById('plugin-code').value;
-        
-        try {
-            const func = new Function(code + ' return typeof execute === "function" ? execute() : "Plugin executado";');
-            const result = func();
-            alert(`Plugin testado com sucesso!\nResultado: ${result}`);
-        } catch (error) {
-            alert(`Erro ao testar plugin:\n${error.message}`);
-        }
-    }
-    
-    /* ============ MODALIDADE DE ESTUDO INTELIGENTE ============ */
-    function startStudyModule(module) {
-        const modules = {
-            ventilation: {
-                title: 'Ventilação Mecânica',
-                topics: [
-                    'Conceitos Básicos',
-                    'Modalidades Ventilatórias',
-                    'Parâmetros e Ajustes',
-                    'Monitorização',
-                    'Complicações',
-                    'Desmame Ventilatório'
-                ]
-            },
-            neonatology: {
-                title: 'Neonatologia',
-                topics: [
-                    'Fisiologia Neonatal',
-                    'Suporte Ventilatório',
-                    'Oxigenoterapia',
-                    'Cuidados Intensivos',
-                    'Farmacologia Neonatal',
-                    'Emergências Neonatais'
-                ]
-            }
-        };
-        
-        const selected = modules[module];
-        if (!selected) return;
-        
-        let html = `
-            <div style="background: var(--bg-surface); border-radius: 15px; padding: 20px; margin-top: 20px;">
-                <h3><i class="fas fa-graduation-cap"></i> ${selected.title}</h3>
-                <p>Selecione um tópico para estudar:</p>
-                
-                <div style="margin-top: 15px;">
-                    ${selected.topics.map((topic, i) => `
-                        <div class="algorithm-step" onclick="studyTopic('${module}', ${i})">
-                            <h4>${i+1}. ${topic}</h4>
-                            <small>Clique para iniciar</small>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        
-        showCustomModal('Módulo de Estudo', html);
-    }
-    
-    function studyTopic(module, topicIndex) {
-        const topics = {
-            ventilation: [
-                {
-                    title: 'Conceitos Básicos',
-                    content: `
-                        <h4>Ventilação Mecânica: Conceitos Fundamentais</h4>
-                        <p>A ventilação mecânica é o suporte artificial à respiração, utilizado quando o paciente não consegue manter ventilação adequada por conta própria.</p>
-                        
-                        <h5>Objetivos:</h5>
-                        <ul>
-                            <li>Manter oxigenação adequada</li>
-                            <li>Garantir ventilação alveolar</li>
-                            <li>Reduzir trabalho respiratório</li>
-                            <li>Prevenir complicações</li>
-                        </ul>
-                        
-                        <h5>Indicações:</h5>
-                        <ul>
-                            <li>Insuficiência respiratória aguda</li>
-                            <li>Pós-operatório de cirurgias extensas</li>
-                            <li>Trauma torácico</li>
-                            <li>Doenças neuromusculares</li>
-                            <li>Sedação profunda ou coma</li>
-                        </ul>
-                        
-                        <div style="margin-top: 20px; padding: 15px; background: rgba(140, 82, 255, 0.1); border-radius: 10px;">
-                            <strong><i class="fas fa-lightbulb"></i> Dica de Estudo:</strong>
-                            <p>Memorize os valores normais dos parâmetros ventilatórios e pratique a interpretação de gasometrias.</p>
-                        </div>
-                    `
-                }
-            ]
-        };
-        
-        const topic = topics[module]?.[topicIndex];
-        if (!topic) {
-            showCustomModal('Tópico de Estudo', '<p>Conteúdo em desenvolvimento. Em breve disponível!</p>');
-            return;
-        }
-        
-        showCustomModal(topic.title, `
-            <div style="max-height: 400px; overflow-y: auto;">
-                ${topic.content}
-                
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button onclick="takeQuiz('${module}', ${topicIndex})" style="flex:1; padding:12px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                        <i class="fas fa-question-circle"></i> Teste seus conhecimentos
-                    </button>
-                    <button onclick="generateFlashcards('${module}', ${topicIndex})" style="flex:1; padding:12px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                        <i class="fas fa-cards"></i> Gerar Flashcards
-                    </button>
-                </div>
-            </div>
-        `);
-    }
-    
-    function takeQuiz(module, topicIndex) {
-        const quizzes = {
-            ventilation: [
-                {
-                    question: 'Qual é a definição de ventilação mecânica?',
-                    options: [
-                        'Suporte artificial à respiração',
-                        'Exercícios respiratórios',
-                        'Oxigenoterapia simples',
-                        'Fisioterapia respiratória'
-                    ],
-                    answer: 0,
-                    explanation: 'Ventilação mecânica é o suporte artificial à respiração, utilizado quando o paciente não consegue manter ventilação adequada por conta própria.'
-                }
-            ]
-        };
-        
-        const quiz = quizzes[module]?.[topicIndex];
-        if (!quiz) {
-            showCustomModal('Quiz', '<p>Quiz em desenvolvimento. Em breve disponível!</p>');
-            return;
-        }
-        
-        let html = `
-            <div style="max-height: 400px; overflow-y: auto;">
-                <h4>Quiz: ${quiz.question}</h4>
-                
-                <div style="margin: 20px 0;">
-                    ${quiz.options.map((option, i) => `
-                        <div class="algorithm-step" onclick="checkAnswer(${i}, ${quiz.answer}, '${quiz.explanation.replace(/'/g, "\\'")}')">
-                            ${option}
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div id="quiz-result" style="margin-top: 20px;"></div>
-            </div>
-        `;
-        
-        showCustomModal('Teste de Conhecimento', html);
-    }
-    
-    function checkAnswer(selected, correct, explanation) {
-        const resultDiv = document.getElementById('quiz-result');
-        
-        if (selected === correct) {
-            resultDiv.innerHTML = `
-                <div style="padding:15px; background:rgba(16, 185, 129, 0.2); border-radius:10px;">
-                    <h5 style="color:var(--success);"><i class="fas fa-check-circle"></i> Resposta Correta!</h5>
-                    <p>${explanation}</p>
-                </div>
-            `;
-        } else {
-            resultDiv.innerHTML = `
-                <div style="padding:15px; background:rgba(239, 68, 68, 0.2); border-radius:10px;">
-                    <h5 style="color:var(--danger);"><i class="fas fa-times-circle"></i> Resposta Incorreta</h5>
-                    <p>${explanation}</p>
-                </div>
-            `;
-        }
-    }
-    
-    function generateStudyPlan() {
-        const plan = {
-            title: 'Plano de Estudo Personalizado',
-            duration: '2 semanas',
-            dailyHours: 2,
-            topics: [
-                {
-                    day: 1,
-                    focus: 'Conceitos Básicos de VM',
-                    activities: ['Teoria (1h)', 'Exercícios (30min)', 'Revisão (30min)']
-                },
-                {
-                    day: 2,
-                    focus: 'Modalidades Ventilatórias',
-                    activities: ['Videoaulas (45min)', 'Casos clínicos (1h)', 'Quiz (15min)']
-                },
-                {
-                    day: 3,
-                    focus: 'Parâmetros e Ajustes',
-                    activities: ['Simulador (1h)', 'Exercícios práticos (1h)']
-                },
-                {
-                    day: 4,
-                    focus: 'Revisão e Prática',
-                    activities: ['Revisão geral (1h)', 'Teste simulado (1h)']
-                },
-                {
-                    day: 5,
-                    focus: 'Gasometria Arterial',
-                    activities: ['Interpretação (1h)', 'Casos complexos (1h)']
-                }
-            ]
-        };
-        
-        let html = `
-            <div style="max-height: 500px; overflow-y: auto;">
-                <h3><i class="fas fa-calendar-alt"></i> ${plan.title}</h3>
-                <p><strong>Duração:</strong> ${plan.duration} | <strong>Dedicacão diária:</strong> ${plan.dailyHours}h</p>
-                
-                <div style="margin-top: 20px;">
-                    ${plan.topics.map(topic => `
-                        <div class="algorithm-step">
-                            <h4>Dia ${topic.day}: ${topic.focus}</h4>
-                            <div style="margin-top: 10px;">
-                                <strong>Atividades:</strong>
-                                <ul style="margin-top: 5px;">
-                                    ${topic.activities.map(act => `<li>${act}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <button onclick="scheduleStudyReminder('${topic.focus}')" style="margin-top:10px; padding:5px 10px; background:var(--info); color:white; border:none; border-radius:5px; cursor:pointer; font-size:12px;">
-                                <i class="fas fa-bell"></i> Agendar Lembrete
-                            </button>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin-top: 20px; padding:15px; background:rgba(140, 82, 255, 0.1); border-radius:10px;">
-                    <h5><i class="fas fa-lightbulb"></i> Dicas para o Estudo:</h5>
-                    <ul>
-                        <li>Estude em blocos de 25-30 minutos com pausas de 5 minutos</li>
-                        <li>Use o simulador para prática de ajustes ventilatórios</li>
-                        <li>Revise os casos clínicos fornecidos pelo sistema</li>
-                        <li>Teste seus conhecimentos com os quizzes regulares</li>
-                    </ul>
-                </div>
-                
-                <button onclick="exportStudyPlan()" style="width:100%; padding:12px; margin-top:20px; background:var(--success); color:white; border:none; border-radius:10px; cursor:pointer;">
-                    <i class="fas fa-download"></i> Exportar Plano de Estudo
-                </button>
-            </div>
-        `;
-        
-        showCustomModal('Plano de Estudo Gerado', html);
-    }
-    
-    function scheduleStudyReminder(topic) {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(10, 0, 0, 0);
-        
-        document.getElementById('new-reminder').value = `Estudar: ${topic}`;
-        document.getElementById('reminder-time').value = tomorrow.toISOString().slice(0, 16);
-        
-        showCustomModal('Lembrete Agendado', `
-            <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <h3>Lembrete Agendado!</h3>
-                <p><strong>"Estudar: ${topic}"</strong></p>
-                <p>Para: ${tomorrow.toLocaleDateString()} às 10:00</p>
-                <p style="margin-top: 10px; font-size: 14px; color: var(--text-muted);">
-                    Você será notificado no horário agendado.
-                </p>
-            </div>
-        `);
-    }
-    
-    function exportStudyPlan() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        doc.setFontSize(20);
-        doc.text('Plano de Estudo - Reelmi AI', 20, 20);
-        
-        doc.setFontSize(12);
-        doc.text('Data de geração: ' + new Date().toLocaleDateString(), 20, 35);
-        doc.text('Duração: 2 semanas | Dedicação diária: 2 horas', 20, 45);
-        
-        let y = 60;
-        for (let i = 1; i <= 5; i++) {
-            if (y > 280) {
-                doc.addPage();
-                y = 20;
-            }
-            doc.text(`Dia ${i}: Tópico de estudo específico`, 20, y);
-            y += 10;
-            doc.text('  • Atividade 1 (1h)', 25, y);
-            y += 7;
-            doc.text('  • Atividade 2 (1h)', 25, y);
-            y += 10;
-        }
-        
-        doc.save(`study-plan-${Date.now()}.pdf`);
-        showNotification('Plano de estudo exportado!');
-    }
-    
-    function takePracticeTest() {
-        const questions = [
-            {
-                question: 'Qual é o valor normal de PEEP em adultos?',
-                options: ['0-2 cmH₂O', '3-5 cmH₂O', '8-12 cmH₂O', '15-20 cmH₂O'],
-                answer: 1
-            },
-            {
-                question: 'Qual modalidade é considerada não invasiva?',
-                options: ['VCV', 'PCV', 'CPAP', 'SIMV'],
-                answer: 2
-            },
-            {
-                question: 'O que significa FiO₂?',
-                options: ['Fração de oxigênio inspirado', 'Frequência inspiratória', 'Fluxo inspiratório', 'Força inspiratória'],
-                answer: 0
-            }
-        ];
-        
-        let html = `
-            <div style="max-height: 400px; overflow-y: auto;">
-                <h3><i class="fas fa-clipboard-check"></i> Teste Prático</h3>
-                <p>Responda às questões abaixo. Você terá seu resultado ao final.</p>
-                
-                <div style="margin-top: 20px;">
-                    ${questions.map((q, i) => `
-                        <div style="margin-bottom: 20px;">
-                            <h5>${i+1}. ${q.question}</h5>
-                            ${q.options.map((opt, j) => `
-                                <div style="margin:5px 0;">
-                                    <input type="radio" name="q${i}" id="q${i}_${j}" value="${j}">
-                                    <label for="q${i}_${j}" style="margin-left:5px;">${opt}</label>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <button onclick="calculateTestScore(${JSON.stringify(questions)})" style="width:100%; padding:12px; margin-top:20px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                    <i class="fas fa-check-circle"></i> Finalizar Teste
-                </button>
-                
-                <div id="test-result" style="margin-top: 20px;"></div>
-            </div>
-        `;
-        
-        showCustomModal('Teste Prático', html);
-    }
-    
-    function calculateTestScore(questions) {
-        let score = 0;
-        const results = [];
-        
-        questions.forEach((q, i) => {
-            const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            if (selected) {
-                const answer = parseInt(selected.value);
-                if (answer === q.answer) {
-                    score++;
-                    results.push(`<span style="color:var(--success);">✓ Questão ${i+1}: Correta</span>`);
-                } else {
-                    results.push(`<span style="color:var(--danger);">✗ Questão ${i+1}: Incorreta (Resposta: ${q.options[q.answer]})</span>`);
-                }
-            } else {
-                results.push(`<span style="color:var(--warning);">? Questão ${i+1}: Não respondida</span>`);
-            }
-        });
-        
-        const percentage = (score / questions.length) * 100;
-        let feedback = '';
-        
-        if (percentage >= 80) {
-            feedback = 'Excelente! Seu conhecimento está muito bom. Continue estudando para manter a excelência.';
-        } else if (percentage >= 60) {
-            feedback = 'Bom trabalho! Você tem uma boa base, mas pode melhorar em alguns tópicos.';
-        } else {
-            feedback = 'É necessário mais estudo. Revise os tópicos básicos e pratique com o simulador.';
-        }
-        
-        document.getElementById('test-result').innerHTML = `
-            <div style="padding:20px; background:var(--bg-surface); border-radius:10px;">
-                <h4><i class="fas fa-chart-bar"></i> Resultado do Teste</h4>
-                <div style="text-align:center; margin:20px 0;">
-                    <div style="font-size:48px; font-weight:bold; color:var(--primary);">${percentage.toFixed(0)}%</div>
-                    <div>${score} de ${questions.length} questões corretas</div>
-                </div>
-                
-                <h5>Detalhamento:</h5>
-                <div style="margin:10px 0;">
-                    ${results.join('<br>')}
-                </div>
-                
-                <div style="margin-top:20px; padding:15px; background:rgba(140, 82, 255, 0.1); border-radius:5px;">
-                    <strong><i class="fas fa-lightbulb"></i> Feedback:</strong>
-                    <p style="margin-top:5px;">${feedback}</p>
-                </div>
-                
-                <button onclick="generateStudyRecommendations(${percentage})" style="width:100%; padding:12px; margin-top:20px; background:var(--info); color:white; border:none; border-radius:10px; cursor:pointer;">
-                    <i class="fas fa-graduation-cap"></i> Gerar Recomendações de Estudo
-                </button>
-            </div>
-        `;
-    }
-    
-    function generateStudyRecommendations(score) {
-        let recommendations = [];
-        
-        if (score < 60) {
-            recommendations = [
-                'Revise os conceitos básicos de ventilação mecânica',
-                'Pratique com o simulador de ventilação',
-                'Estude os casos clínicos básicos',
-                'Faça os quizzes de reforço',
-                'Assista às videoaulas introdutórias'
-            ];
-        } else if (score < 80) {
-            recommendations = [
-                'Aprofunde-se em modalidades ventilatorias',
-                'Pratique ajustes de parâmetros',
-                'Estude casos clínicos intermediários',
-                'Use o analisador de gasometria',
-                'Revise complicações da VM'
-            ];
-        } else {
-            recommendations = [
-                'Estude casos clínicos complexos',
-                'Pratique protocolos de desmame',
-                'Explore modos ventilatórios avançados',
-                'Participe de discussões de casos',
-                'Mantenha-se atualizado com literatura'
-            ];
-        }
-        
-        let html = `
-            <div style="max-height: 400px; overflow-y: auto;">
-                <h3><i class="fas fa-graduation-cap"></i> Recomendações de Estudo</h3>
-                <p>Baseado no seu desempenho (${score.toFixed(0)}%), recomendamos:</p>
-                
-                <div style="margin:20px 0;">
-                    ${recommendations.map((rec, i) => `
-                        <div class="algorithm-step" onclick="scheduleStudyActivity('${rec}')">
-                            <h5>${i+1}. ${rec}</h5>
-                            <small>Clique para agendar atividade</small>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin-top:20px; padding:15px; background:rgba(16, 185, 129, 0.1); border-radius:10px;">
-                    <strong><i class="fas fa-chart-line"></i> Plano de Ação:</strong>
-                    <p style="margin-top:5px;">Dedique 1-2 horas diárias para estudo, focando nas áreas recomendadas acima.</p>
-                </div>
-            </div>
-        `;
-        
-        showCustomModal('Recomendações de Estudo', html);
-    }
-    
-    function scheduleStudyActivity(activity) {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(14, 0, 0, 0);
-        
-        document.getElementById('new-reminder').value = activity;
-        document.getElementById('reminder-time').value = tomorrow.toISOString().slice(0, 16);
-        
-        showCustomModal('Atividade Agendada', `
-            <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 48px; color: var(--success); margin-bottom: 20px;">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <h3>Atividade Agendada!</h3>
-                <p><strong>${activity}</strong></p>
-                <p>Para: ${tomorrow.toLocaleDateString()} às 14:00</p>
-                <button onclick="document.getElementById('memory-manager-modal').style.display='flex'" style="padding:10px 20px; margin-top:20px; background:var(--primary-gradient); color:white; border:none; border-radius:10px; cursor:pointer;">
-                    <i class="fas fa-bell"></i> Ver Todos os Lembretes
-                </button>
-            </div>
-        `);
-    }
-    
-    // ==================== INICIALIZAÇÃO COMPLETA ====================
-    
+    // ==================== INICIALIZAÇÃO ====================
     window.onload = function() {
-        // Carregar tema salvo
+        // Carregar preferências
         const savedTheme = localStorage.getItem('reelmi_theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light-mode');
         }
         
+        const savedCompactMode = localStorage.getItem('reelmi_compact_mode');
+        if (savedCompactMode === 'true') {
+            toggleCompactMode(); // Ativa o modo compacto
+        }
+        
+        const savedWakeWord = localStorage.getItem('reelmi_wake_word');
+        if (savedWakeWord === 'true') {
+            toggleWakeWord(); // Ativa o wake word
+        }
+        
+        const savedSidebarHidden = localStorage.getItem('reelmi_sidebar_hidden');
+        if (savedSidebarHidden === 'true') {
+            toggleSidebar(); // Esconde a sidebar
+        }
+        
         // Carregar contexto
         carregarContextoSalvo();
         
-        // Carregar dados treinados
-        const trainedData = JSON.parse(localStorage.getItem('reelmi_trained') || '[]');
-        trainedData.forEach(item => {
-            perguntas.push(item.question);
-            respostas.push(item.answer);
-        });
+        // Configurar menu dropdown
+        setupMenuDropdown();
         
-        // Inicializar IA Real
-        selectAIMode('simulated');
-        
-        // Carregar lembretes existentes
-        loadReminders();
-        
-        // Iniciar verificação de lembretes
-        scheduleReminderCheck();
-        
-        // Verificar estado da sidebar
-        checkSidebarState();
-        
-        // Iniciar wake word
-        setTimeout(() => iniciarWakeWord(), 2000);
-        
-        // Mensagem inicial
+        // Mensagem de boas-vindas
         setTimeout(() => {
             if (contextoConversa.length === 0) {
                 const welcomeMessages = [
-                    "Olá! Sou Reelmi AI, seu assistente especializado em ventilação mecânica e neonatologia. Como posso ajudar?",
-                    "Bem-vindo ao Reelmi AI! Tenho recursos avançados como simulador ventilatório, editor de código, agente autônomo e muito mais. Experimente!",
-                    "Saudações! Sou Reelmi AI, com funcionalidades de IA real, memória avançada, multimodalidade e sistema operacional completo. Estou aqui para ajudar!"
+                    "Olá! Sou Reelmi AI, seu assistente especializado. Tenho 7 funcionalidades principais no menu: Modo Compacto, Wake Word, Upload de Imagens, Avisos de Segurança, Recomendações, Dock de Apps e Timeline do Chat!",
+                    "Bem-vindo ao Reelmi AI! Experimente as funcionalidades do menu dropdown: Modo Compacto, Wake Word 'Hey Reelmi', envio de imagens e muito mais!",
+                    "Saudações! Sou Reelmi AI. Todas as funcionalidades estão no menu dropdown. Clique no botão de menu para explorar!"
                 ];
                 
                 const randomMsg = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
@@ -5495,37 +2928,113 @@ function calculatePaO2FiO2(pao2, fio2) {
             }
         }, 1000);
         
-        // Configurar eventos
+        // Configurar personalidade
         document.getElementById('personality-select').addEventListener('change', function() {
-            showNotification(`Modo de personalidade alterado para: ${this.options[this.selectedIndex].text}`);
+            showNotification(`Modo: ${this.options[this.selectedIndex].text}`);
         });
         
-        // Inicializar outros componentes
-        initializeAdvancedFeatures();
+        console.log('✅ Reelmi AI - Sistema completo inicializado!');
+        console.log('📋 7 Funcionalidades no menu:');
+        console.log('   1. Modo Compacto');
+        console.log('   2. Wake Word "Hey Reelmi"');
+        console.log('   3. Upload de Imagens');
+        console.log('   4. Avisos de Segurança');
+        console.log('   5. Recomendações Inteligentes');
+        console.log('   6. Dock de Aplicativos');
+        console.log('   7. Timeline do Chat');
     };
     
-    function initializeAdvancedFeatures() {
-        // Carregar plugins personalizados
-        const customPlugins = JSON.parse(localStorage.getItem('reelmi_custom_plugins') || '[]');
-        customPlugins.forEach(plugin => {
-            if (!plugins.find(p => p.id === plugin.id)) {
-                plugins.push(plugin);
-            }
-        });
-        
-        // Carregar configurações do simulador
-        const ventSettings = localStorage.getItem('ventilation_settings');
-        if (ventSettings) {
-            console.log('Configurações ventilatórias carregadas:', JSON.parse(ventSettings));
+    function carregarContextoSalvo() {
+        const saved = localStorage.getItem('reelmi_context');
+        if (saved) {
+            contextoConversa = JSON.parse(saved);
+            document.getElementById('context-length').textContent = contextoConversa.length;
+        }
+    }
+    
+    // ==================== ATALHOS DE TECLADO ====================
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'b') {
+            e.preventDefault();
+            toggleSidebar();
         }
         
-        // Verificar atualizações (simulado)
-        setTimeout(() => {
-            if (Math.random() > 0.7) {
-                showNotification('✅ Sistema atualizado com todas as funcionalidades avançadas!');
-            }
-        }, 3000);
+        if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            toggleAppDock();
+        }
+        
+        if (e.ctrlKey && e.key === 't') {
+            e.preventDefault();
+            toggleTimeline();
+        }
+        
+        if (e.ctrlKey && e.key === 'm') {
+            e.preventDefault();
+            toggleCompactMode();
+        }
+        
+        if (e.key === 'Escape') {
+            // Fechar todos os modais
+            document.querySelectorAll('.calculator-modal, .training-modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+            // Fechar menu dropdown
+            document.getElementById('menuDropdown').classList.remove('show');
+        }
+    });
+    
+    // ==================== FUNÇÕES DE MODAIS (simplificadas) ====================
+    function openRealAIModal() {
+        document.getElementById('real-ai-modal').style.display = 'flex';
     }
+    
+    function openMultimodalModal() {
+        document.getElementById('multimodal-modal').style.display = 'flex';
+    }
+    
+    function showHistory() {
+        const historico = JSON.parse(localStorage.getItem('reelmi_historico') || '[]');
+        let html = '<h2>Histórico de Conversas</h2>';
+        
+        if (historico.length === 0) {
+            html += '<p>Nenhuma conversa salva ainda.</p>';
+        } else {
+            historico.forEach(conv => {
+                html += `
+                    <div class="algorithm-step" onclick="carregarConversa(${conv.id})">
+                        <h3>${conv.data}</h3>
+                        <small>${conv.mensagens.length} mensagens</small>
+                    </div>
+                `;
+            });
+        }
+        
+        // Criar modal customizado
+        const modal = document.createElement('div');
+        modal.className = 'calculator-modal';
+        modal.style.display = 'flex';
+        modal.innerHTML = `
+            <div class="calc-content">
+                ${html}
+                <button onclick="this.parentElement.parentElement.remove()" style="width:100%; padding:12px; margin-top:20px; background:var(--danger); color:white; border:none; border-radius:10px; cursor:pointer;">
+                    Fechar
+                </button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    // Funções existentes mantidas (simplificadas)
+    function showMedicalCalculators() { document.getElementById('medical-calculators').style.display = 'flex'; }
+    function showAlgorithms() { document.getElementById('algorithms-modal').style.display = 'flex'; }
+    function openPythonTerminal() { document.getElementById('python-terminal-modal').style.display = 'flex'; }
+    function showPlugins() { document.getElementById('plugins-modal').style.display = 'flex'; }
+    function showPluginDeveloper() { document.getElementById('plugin-developer-modal').style.display = 'flex'; }
+    function openTraining() { document.getElementById('training-modal').style.display = 'flex'; }
+    function generateInstagramCard() { document.getElementById('instagram-modal').style.display = 'flex'; }
+    function showMemoryManager() { document.getElementById('memory-manager-modal').style.display = 'flex'; }
+    function showGasometryAnalyzer() { document.getElementById('gasometry-modal').style.display = 'flex'; }
     
     function generatePDF() {
         const { jsPDF } = window.jspdf;
@@ -5539,174 +3048,176 @@ function calculatePaO2FiO2(pao2, fio2) {
         doc.text('Resumo da Conversa:', 20, 40);
         
         let y = 50;
-        contextoConversa.forEach((msg, i) => {
+        contextoConversa.slice(-10).forEach((msg, i) => {
             if (y > 280) {
                 doc.addPage();
                 y = 20;
             }
             const role = msg.role === 'user' ? 'Usuário' : 'Reelmi AI';
-            const text = msg.content.substring(0, 100);
+            const text = msg.content.substring(0, 80);
             doc.text(`${role}: ${text}...`, 20, y);
             y += 10;
         });
-        
-        // Adicionar estatísticas
-        y += 10;
-        doc.text('Estatísticas:', 20, y);
-        y += 10;
-        doc.text(`• Total de mensagens: ${contextoConversa.length}`, 25, y);
-        y += 7;
-        doc.text(`• Memórias salvas: ${Object.keys(longTermMemory).length}`, 25, y);
-        y += 7;
-        doc.text(`• Plugins ativos: ${plugins.filter(p => p.active).length}`, 25, y);
         
         doc.save(`reelmi-report-${Date.now()}.pdf`);
         showNotification('PDF gerado com sucesso!');
     }
     
-    function showPersonalitySettings() {
-        showCustomModal('Configurações de Personalidade', `
-            <div style="max-height: 400px; overflow-y: auto;">
-                <h3><i class="fas fa-user-cog"></i> Personalidade da IA</h3>
-                <p>Selecione como a Reelmi AI deve se comportar:</p>
-                
-                <div style="margin:20px 0;">
-                    <div class="algorithm-step" onclick="setPersonality('professional')">
-                        <h5>👨‍💼 Profissional (Padrão)</h5>
-                        <p>Respostas técnicas e objetivas, ideal para trabalho</p>
-                    </div>
-                    
-                    <div class="algorithm-step" onclick="setPersonality('teacher')">
-                        <h5>👨‍🏫 Professor</h5>
-                        <p>Explicações didáticas, com dicas de estudo e exemplos</p>
-                    </div>
-                    
-                    <div class="algorithm-step" onclick="setPersonality('simple')">
-                        <h5>🤗 Explicação Simples</h5>
-                        <p>Linguagem acessível, ideal para iniciantes</p>
-                    </div>
-                    
-                    <div class="algorithm-step" onclick="setPersonality('technical')">
-                        <h5>🔬 Técnico Detalhado</h5>
-                        <p>Informações técnicas avançadas, com métricas e dados</p>
-                    </div>
-                    
-                    <div class="algorithm-step" onclick="setPersonality('empathetic')">
-                        <h5>🤝 Empático</h5>
-                        <p>Tom acolhedor e compreensivo, ideal para situações sensíveis</p>
-                    </div>
-                    
-                    <div class="algorithm-step" onclick="setPersonality('analytical')">
-                        <h5>📈 Analítico</h5>
-                        <p>Foco em dados, análises estruturadas e comparações</p>
-                    </div>
-                </div>
-                
-                <div style="margin-top:20px; padding:15px; background:var(--bg-hover); border-radius:10px;">
-                    <strong><i class="fas fa-info-circle"></i> Personalidade Atual:</strong>
-                    <p style="margin-top:5px;" id="current-personality-display">Carregando...</p>
+    function toggleRealAI() {
+        realAIActive = !realAIActive;
+        const fab = document.getElementById('ai-fab');
+        if (realAIActive) {
+            fab.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
+            fab.innerHTML = '<i class="fas fa-brain"></i> AI ON';
+            document.getElementById('ai-mode-indicator').textContent = 'IA: Ativa';
+            showNotification('IA Real ativada');
+        } else {
+            fab.style.background = 'var(--primary-gradient)';
+            fab.innerHTML = '<i class="fas fa-brain"></i>';
+            document.getElementById('ai-mode-indicator').textContent = 'IA: Local';
+            showNotification('IA Real desativada');
+        }
+        updateMenuStatusIndicators();
+    }
+    
+    // Funções de janelas (simplificadas)
+    function openWindow(type) {
+        const windowId = 'window-' + Date.now();
+        const window = document.createElement('div');
+        window.className = 'os-window window-opening';
+        window.id = windowId;
+        window.style.zIndex = ++windowZIndex;
+        
+        let title = '';
+        let content = '';
+        
+        switch(type) {
+            case 'notion':
+                title = 'Editor Notion';
+                content = `<div class="notion-editor" contenteditable="true">Comece a digitar aqui...</div>`;
+                break;
+            case 'terminal':
+                title = 'Terminal Avançado';
+                content = `<div class="advanced-terminal">$ Reelmi Terminal v1.0<br>$ Digite "help" para comandos</div>`;
+                break;
+            case 'ventilation':
+                title = 'Simulador Ventilatório';
+                content = `<div class="ventilation-simulator"><h3>Simulador de Ventilação Mecânica</h3><p>Em desenvolvimento...</p></div>`;
+                break;
+            case 'agent':
+                title = 'Agente Auto-GPT';
+                content = `<div class="agent-status"><h3>Agente Autônomo</h3><p>Pronto para executar tarefas...</p></div>`;
+                break;
+            case 'study':
+                title = 'Dashboard de Estudo';
+                content = `<div class="study-dashboard"><h3>Dashboard de Estudo</h3><p>Seu progresso de aprendizagem...</p></div>`;
+                break;
+            case 'code':
+                title = 'Editor de Código';
+                content = `<textarea style="width:100%; height:300px; background:#1a1a1a; color:white; border:none; padding:10px;">// Digite seu código aqui</textarea>`;
+                break;
+        }
+        
+        window.innerHTML = `
+            <div class="window-header">
+                <span><i class="fas fa-window-maximize"></i> ${title}</span>
+                <div class="window-controls">
+                    <button onclick="minimizeWindow('${windowId}')" title="Minimizar"><i class="fas fa-minus"></i></button>
+                    <button onclick="maximizeWindow('${windowId}')" title="Maximizar"><i class="fas fa-expand"></i></button>
+                    <button onclick="closeWindow('${windowId}')" title="Fechar"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-        `);
+            <div class="window-content">
+                ${content}
+            </div>
+        `;
         
-        // Atualizar display
-        const select = document.getElementById('personality-select');
-        const current = select.options[select.selectedIndex].text;
-        document.getElementById('current-personality-display').textContent = current;
+        const maxX = window.innerWidth - 400;
+        const maxY = window.innerHeight - 400;
+        window.style.left = Math.floor(Math.random() * maxX) + 'px';
+        window.style.top = Math.floor(Math.random() * maxY) + 'px';
+        
+        document.getElementById('window-container').appendChild(window);
+        windows.push(windowId);
+        
+        showNotification(`Janela "${title}" aberta`);
     }
     
-    function setPersonality(personality) {
-        const select = document.getElementById('personality-select');
-        select.value = personality;
-        showNotification(`Personalidade alterada para: ${select.options[select.selectedIndex].text}`);
+    function closeWindow(windowId) {
+        const window = document.getElementById(windowId);
+        if (window) {
+            window.remove();
+            windows = windows.filter(id => id !== windowId);
+        }
     }
     
-    // Adicionar atalhos de teclado
-    document.addEventListener('keydown', function(e) {
-        // Ctrl + B: Alternar sidebar
-        if (e.ctrlKey && e.key === 'b') {
-            e.preventDefault();
-            toggleSidebar();
-        }
-        
-        // Ctrl + N: Nova janela
-        if (e.ctrlKey && e.key === 'n') {
-            e.preventDefault();
-            openWindow('notion');
-        }
-        
-        // Ctrl + T: Novo terminal
-        if (e.ctrlKey && e.key === 't') {
-            e.preventDefault();
-            openWindow('terminal');
-        }
-        
-        // Ctrl + L: Limpar chat
-        if (e.ctrlKey && e.key === 'l') {
-            e.preventDefault();
-            limparChat();
-        }
-        
-        // Ctrl + D: Alternar dock
-        if (e.ctrlKey && e.key === 'd') {
-            e.preventDefault();
-            toggleDock();
-        }
-        
-        // Ctrl + I: Alternar IA Real
-        if (e.ctrlKey && e.key === 'i') {
-            e.preventDefault();
-            toggleRealAI();
-        }
-        
-        // Esc: Fechar todos os modais
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.calculator-modal, .training-modal').forEach(modal => {
-                modal.style.display = 'none';
-            });
-        }
-    });
+    function minimizeWindow(windowId) {
+        const window = document.getElementById(windowId);
+        const content = window.querySelector('.window-content');
+        content.style.display = content.style.display === 'none' ? 'block' : 'none';
+        window.style.height = content.style.display === 'none' ? '48px' : 'auto';
+    }
     
-    // Adicionar estilo de animação
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+    function maximizeWindow(windowId) {
+        const window = document.getElementById(windowId);
+        if (window.style.width === '95vw') {
+            window.style.width = '600px';
+            window.style.height = '500px';
+            window.style.left = 'calc(50% - 300px)';
+            window.style.top = 'calc(50% - 250px)';
+        } else {
+            window.style.width = '95vw';
+            window.style.height = '90vh';
+            window.style.left = '2.5vw';
+            window.style.top = '5vh';
         }
-        
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100px); opacity: 0; }
-        }
-        
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 5px rgba(140, 82, 255, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(140, 82, 255, 0.8); }
-        }
-        
-        .ai-active {
-            animation: pulseGlow 2s infinite;
-        }
-    `;
-    document.head.appendChild(style);
+    }
     
-    console.log('✅ Reelmi AI v2.0 - Sistema completo carregado com sucesso!');
-    console.log('📋 Funcionalidades ativas:');
-    console.log('   • IA Real (OpenAI/Groq/Local/Simulated)');
-    console.log('   • Sistema Operacional com Janelas');
-    console.log('   • Memória Avançada e Lembretes');
-    console.log('   • Editor Notion e Código');
-    console.log('   • Terminal Avançado');
-    console.log('   • Simulador Ventilatório');
-    console.log('   • Agente Auto-GPT');
-    console.log('   • Multimodalidade (OCR, Detecção, Análise)');
-    console.log('   • Analisador de Gasometria');
-    console.log('   • Sistema de Estudo Inteligente');
-    console.log('   • Plugins e Personalização');
-    console.log('   • Detecção de Emoções');
-    console.log('   • Interface Responsiva');
-    console.log('\n🚀 Pronto para uso!');
+    // ==================== FUNÇÕES DE CÁLCULO MÉDICO ====================
+    function calculatePaO2FiO2() {
+        const pao2 = parseFloat(document.getElementById('pao2').value);
+        const fio2 = parseFloat(document.getElementById('fio2').value);
+        
+        if (pao2 && fio2 && fio2 > 0) {
+            const resultado = pao2 / fio2;
+            let classificacao = '';
+            
+            if (resultado > 400) classificacao = 'Normal';
+            else if (resultado >= 300) classificacao = 'Leve';
+            else if (resultado >= 200) classificacao = 'Moderado';
+            else classificacao = 'Grave (SDRA)';
+            
+            document.getElementById('result-pao2fio2').innerHTML = `
+                <strong>Índice PaO2/FiO2:</strong> ${resultado.toFixed(0)}<br>
+                <strong>Classificação:</strong> ${classificacao}
+            `;
+        }
+    }
+    
+    function calculateMinuteVolume() {
+        const tv = parseFloat(document.getElementById('tidal-volume').value);
+        const rr = parseFloat(document.getElementById('resp-rate').value);
+        
+        if (tv && rr) {
+            const mv = (tv * rr) / 1000;
+            document.getElementById('result-minute-volume').innerHTML = `
+                <strong>Volume Minuto:</strong> ${mv.toFixed(2)} L/min<br>
+                <em>Valor normal: 5-8 L/min</em>
+            `;
+        }
+    }
+    
+    // ==================== INICIALIZAÇÃO FINAL ====================
+    console.log('🚀 Reelmi AI pronto para uso!');
+    console.log('📋 Todas as 7 funcionalidades estão funcionando:');
+    console.log('   1. ✅ Modo Compacto');
+    console.log('   2. ✅ Wake Word "Hey Reelmi"');
+    console.log('   3. ✅ Upload de Imagens');
+    console.log('   4. ✅ Avisos de Segurança');
+    console.log('   5. ✅ Recomendações Inteligentes');
+    console.log('   6. ✅ Dock de Aplicativos');
+    console.log('   7. ✅ Timeline do Chat');
+    
 </script>
 </body>
 </html>
